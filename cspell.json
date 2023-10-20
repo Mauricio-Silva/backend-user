@@ -1,0 +1,20 @@
+{
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "bson",
+        "dotenv",
+        "eletiva",
+        "fuzzywuzzy",
+        "httpx",
+        "jsonable",
+        "pydantic",
+        "pymongo",
+        "starlette",
+        "uvicorn"
+    ],
+    "ignoreWords": [],
+    "import": []
+}

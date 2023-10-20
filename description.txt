@@ -1,0 +1,6 @@
+<!-- cSpell:disable -->
+Instituto Federal de Educação, Ciência e Tecnologia de Mato Grosso do Sul - Três Lagoas <br/>
+Tecnologia em Análise e Desenvolvimento de Sistemas - TADS4 <br/>
+Eletiva: Rede Social
+
+**SnapCut** - Social media for sharing videos
