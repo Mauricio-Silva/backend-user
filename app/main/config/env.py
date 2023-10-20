@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from urllib.parse import quote_plus
 from os import getenv
-from . import service_url
+import sys
 
 
 load_dotenv()
@@ -38,7 +38,8 @@ DB_URI = DB_URL.format(
 MONGO = DB_URI if not DOCKER_URI or not len(DOCKER_URI) else DOCKER_URI
 
 BROWSER = getenv("BROWSER", "google-chrome")
-SWAGGER = f"http://0.0.0.0:{APP_PORT}/docs"
+HOST = "0.0.0.0" if "--host" in sys.argv else "127.0.0.1"
+SWAGGER = f"http://{HOST}:{APP_PORT}/docs"
 
 SECRET_KEY = getenv("SECRET_KEY")
 ALGORITHM = getenv("ALGORITHM", "HS256")
