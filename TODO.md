@@ -4,14 +4,14 @@ Social media for sharing videos
 
 ### Todo
 
-- [ ] add phone attr  
 - [ ] tests  
 - [ ] recuperate password endpoint  
-- [ ] Move some exceptions from routes to usecases  
 - [ ] Add service email  
 
 ### Done
 
+- [ ] Move some exceptions from routes to usecases  
+- [ ] add phone attr  
 - [ ] Add endpoints to add videos, friends and profile photo  
 - [ ] Customize more exceptions like RequiredRequestBody  
 - [ ] Videos: list all my videos, all my friends videos, add and remove a video (uuid?, url, create_at)  

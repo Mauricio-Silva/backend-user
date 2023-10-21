@@ -77,7 +77,10 @@ class UserMongoRepository(
     async def create(self, data: CreateUserRepository.Input) -> CreateUserRepository.Output:
         user = CreateUserDocument(**data.model_dump(exclude_none=True))
         with MongoConnection() as collection:
-            new_user = collection.insert_one(user.model_dump())
+            try:
+                new_user = collection.insert_one(user.model_dump())
+            except Exception:
+                raise InternalError("Error in creating user")
             result = collection.find_one({"_id": ObjectId(new_user.inserted_id)}, USER_MODEL_OUT_PROJECTION)
             return None if not result else UserModelOut(**result)
 

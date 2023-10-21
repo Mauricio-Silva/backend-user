@@ -1,5 +1,6 @@
 from app.domain.usecases import ListFriends
 from app.data.protocols import ListFriendsRepository
+from app.main.exceptions import NotFound
 
 
 class DbListFriends(ListFriends):
@@ -10,4 +11,9 @@ class DbListFriends(ListFriends):
         self.__list_friends_repository = list_friends_repository
 
     async def list_all(self, uuid: str) -> ListFriends.Output:
-        return await self.__list_friends_repository.list_all(uuid)
+        friends = await self.__list_friends_repository.list_all(uuid)
+
+        if not friends:
+            raise NotFound("Friends")
+
+        return friends

@@ -23,8 +23,6 @@ from app.schemas.common import PATH_UUID, QUERY_SEARCH, MessageResponse
 from app.main.exceptions import (
     RequiredQueryParam,
     InvalidUuid,
-    NotFound,
-    InternalError,
     RequiredRequestBody
 )
 from app.infra.auth import JwtBearer
@@ -46,9 +44,6 @@ async def list_all_profiles():
     db_list_users = make_db_list_users()
     users = await db_list_users.list_all()
 
-    if not users:
-        raise NotFound("Users")
-
     return UsersOut(message="Users found", data=users)
 
 
@@ -65,9 +60,6 @@ async def get_personal_profile(uuid: Annotated[str, Depends(JwtBearer())]):
 
     db_personal_profile = make_db_personal_profile()
     profile = await db_personal_profile.get_personal_profile(uuid)
-
-    if not profile:
-        raise NotFound("Profile")
 
     return ProfileOut(message="Personal profile", data=profile)
 
@@ -86,9 +78,6 @@ async def get_profile_by_id(uuid: PATH_UUID):
     db_get_user = make_db_get_user()
     user = await db_get_user.get_by_id(uuid)
 
-    if user is None:
-        raise NotFound("User")
-
     return UserOut(message="User found", data=user)
 
 
@@ -106,9 +95,6 @@ async def search_profile(q: QUERY_SEARCH):
     db_search_user = make_db_search_user()
     users = await db_search_user.search(q)
 
-    if users is None:
-        raise NotFound("User(s)")
-
     return UsersOut(message="Users found", data=users)
 
 
@@ -125,9 +111,6 @@ async def create_profile(data: Annotated[UserCreate, Body()]):
 
     db_create_user = make_db_create_user()
     user = await db_create_user.create(data)
-
-    if user is None:
-        raise InternalError("Error in creating user")
 
     return UserOut(message="User created", data=user)
 
@@ -152,9 +135,6 @@ async def update_profile(
     data.uuid = uuid
     db_update_user = make_db_update_user()
     user = await db_update_user.update(data)
-
-    if user is None:
-        raise NotFound("User")
 
     return UserOut(message="User updated", data=user)
 
@@ -190,9 +170,6 @@ async def disable_profile(uuid: Annotated[str, Depends(JwtBearer())]):
     db_disable_user = make_db_disable_user()
     user = await db_disable_user.disable(uuid)
 
-    if user is None:
-        raise NotFound("User")
-
     return UserOut(message="User disabled", data=user)
 
 
@@ -209,8 +186,5 @@ async def enable_profile(uuid: Annotated[str, Depends(JwtBearer())]):
 
     db_enable_user = make_db_enable_user()
     user = await db_enable_user.enable(uuid)
-
-    if user is None:
-        raise NotFound("User")
 
     return UserOut(message="User enabled", data=user)

@@ -1,5 +1,6 @@
 from app.domain.usecases import ListUsers
 from app.data.protocols import ListUsersRepository
+from app.main.exceptions import NotFound
 
 
 class DbListUsers(ListUsers):
@@ -10,4 +11,9 @@ class DbListUsers(ListUsers):
         self.__list_users_repository = list_users_repository
 
     async def list_all(self) -> ListUsers.Output:
-        return await self.__list_users_repository.list_all()
+        users = await self.__list_users_repository.list_all()
+
+        if not users:
+            raise NotFound("Users")
+
+        return users

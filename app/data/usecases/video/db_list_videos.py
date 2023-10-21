@@ -1,5 +1,6 @@
 from app.domain.usecases import ListVideos
 from app.data.protocols import ListVideosRepository
+from app.main.exceptions import NotFound
 
 
 class DbListVideos(ListVideos):
@@ -10,4 +11,9 @@ class DbListVideos(ListVideos):
         self.__list_videos_repository = list_videos_repository
 
     async def list_all(self) -> ListVideos.Output:
-        return await self.__list_videos_repository.list_all()
+        videos = await self.__list_videos_repository.list_all()
+
+        if not videos:
+            raise NotFound("Videos")
+
+        return videos

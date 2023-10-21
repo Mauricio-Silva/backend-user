@@ -4,6 +4,7 @@ from app.data.protocols import (
     GetUserByUniqueRepository,
     CreateUserRepository
 )
+from app.main.exceptions import NotFound
 
 
 class DbCreateUser(CreateUser):
@@ -23,4 +24,9 @@ class DbCreateUser(CreateUser):
         get_user_input = GetUserInput(username=data.username, email=data.email)
         await self.__check_user_by_unique_repository.check_unique(get_user_input)
 
-        return await self.__create_user_repository.create(data)
+        user = await self.__create_user_repository.create(data)
+
+        if user is None:
+            raise NotFound("User")
+
+        return user
