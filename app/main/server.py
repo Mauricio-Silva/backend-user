@@ -10,11 +10,13 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(
     **Server.app,
     lifespan=lifespan,
-    routes=ROUTES,
     exception_handlers=ExceptionHandler.handlers()
 )
 
 app.add_middleware(TraceControl)
 app.add_middleware(CORSMiddleware, **Server.origin)
+
+for router in ROUTES:
+    app.include_router(router)
 
 Logger.info("\033[33mSnapcut Backend User Service was Initialized 🚀\033[m")

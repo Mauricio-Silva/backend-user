@@ -7,7 +7,8 @@ from app.utils.custom_types import (
     USERNAME_VALIDATOR,
     EMAIL_VALIDATOR,
     PASSWORD_VALIDATOR,
-    BIO_VALIDATOR
+    BIO_VALIDATOR,
+    PHONE_VALIDATOR
 )
 
 
@@ -28,6 +29,7 @@ class UserCreate(BaseModel):
     username: USERNAME_VALIDATOR = Field(...)
     email: EMAIL_VALIDATOR | None = Field(default=None)
     password: PASSWORD_VALIDATOR = Field(...)
+    phone: PHONE_VALIDATOR = Field(default=None)
     bio: BIO_VALIDATOR | None = Field(default=None)
 
 
@@ -36,4 +38,5 @@ class UserUpdate(BaseModel):
     name: NAME_VALIDATOR | None = Field(default=None)
     username: USERNAME_VALIDATOR | None = Field(default=None)
     email: EMAIL_VALIDATOR | None = Field(default=None)
+    phone: PHONE_VALIDATOR = Field(default=None)
     bio: BIO_VALIDATOR | None = Field(default=None)

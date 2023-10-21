@@ -58,6 +58,7 @@ class CreateUserInput(BaseModel):
     username: str
     email: str | None
     password: str
+    phone: str | None
     bio: str | None
 
 
@@ -75,6 +76,7 @@ class UpdateUserInput(BaseModel):
     name: str | None
     username: str | None
     email: str | None
+    phone: str | None
     bio: str | None
 
 

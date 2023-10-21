@@ -8,7 +8,8 @@ from .patterns import (
     EMAIL_REGEX,
     PASSWORD_REGEX,
     BIO_REGEX,
-    URL_REGEX
+    URL_REGEX,
+    PHONE_REGEX
 )
 
 
@@ -63,4 +64,11 @@ BIO_VALIDATOR = Annotated[str, constr(
 URL_VALIDATOR = Annotated[str, constr(
     strip_whitespace=True,
     pattern=URL_REGEX
+)]
+
+PHONE_VALIDATOR = Annotated[str, constr(
+    strip_whitespace=True,
+    min_length=11,
+    max_length=11,
+    pattern=PHONE_REGEX
 )]

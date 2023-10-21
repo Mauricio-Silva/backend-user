@@ -31,3 +31,7 @@ BIO_REGEX = r"^[a-zA-Z0-9_ ]+$"
 # Match: basic url validation rules
 # Example: http://www.google.com.br
 URL_REGEX = r"^(https?|ftp):\/\/[^\s\$.?#].[^\s]*$"
+
+# Match: basic phone validation rules
+# Example: 00900110011
+PHONE_REGEX = r"^\d{2}9\d{8}$"

@@ -8,6 +8,7 @@ class UserModelOut(BaseModel):
     username: str | None
     email: str | None
     photo: str | None = None
+    phone: str | None = None
     bio: str | None
     create_at: DATETIME | None
     update_at: DATETIME | None
@@ -28,6 +29,7 @@ class ProfileModelOut(BaseModel):
     username: str | None
     email: str | None
     photo: str | None = None
+    phone: str | None = None
     bio: str | None
     videos: LIST = None
     friends: LIST = None
