@@ -11,7 +11,8 @@ from .user import (
 )
 from .auth import (
     make_db_auth_login,
-    make_db_update_password
+    make_db_update_password,
+    make_db_reset_password
 )
 from .friend import (
     make_db_list_friends,

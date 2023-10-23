@@ -1,5 +1,8 @@
 from abc import ABCMeta, abstractmethod
-from app.domain.usecases import UpdatePassword
+from app.domain.usecases import (
+    UpdatePassword,
+    ResetPassword
+)
 
 
 class GetPasswordByUuidRepository(metaclass=ABCMeta):
@@ -13,4 +16,12 @@ class UpdatePasswordRepository(metaclass=ABCMeta):
 
     @abstractmethod
     async def update_password(self, data: Input) -> None:
+        pass
+
+
+class ResetPasswordRepository(metaclass=ABCMeta):
+    Input = ResetPassword.Input
+
+    @abstractmethod
+    async def reset_password(self, data: Input) -> None:
         pass

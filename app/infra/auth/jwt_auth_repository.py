@@ -19,7 +19,8 @@ class JwtRepository(
     EncodeTokenRepository,
     DecodeTokenRepository
 ):
-    def __init__(self) -> None:
+    def __init__(self, reset_expire: int = None) -> None:
+        self.__expire = JWT.expire if not reset_expire else reset_expire
         self.__crypt_context = CryptContext(schemes=[JWT.scheme], deprecated="auto")
 
     def hash_password(self, plain_password: str) -> str:
@@ -29,7 +30,7 @@ class JwtRepository(
         return self.__crypt_context.verify(plain_password, hashed_password)
 
     def encode_token(self, data: EncodeTokenRepository.Input) -> str:
-        expiration = datetime.utcnow() + timedelta(minutes=JWT.expire)
+        expiration = datetime.utcnow() + timedelta(minutes=self.__expire)
         encoder = JwtEncoder(
             issuer=data.url,
             subject=f"uuid:{data.uuid.encode('utf-8').hex()}",

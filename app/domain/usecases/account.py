@@ -14,3 +14,16 @@ class UpdatePassword(metaclass=ABCMeta):
     @abstractmethod
     async def update_password(self, data: Input) -> None:
         pass
+
+
+class ResetPasswordInput(BaseModel):
+    email: str
+    access_token: str | None = None
+
+
+class ResetPassword(metaclass=ABCMeta):
+    Input = ResetPasswordInput
+
+    @abstractmethod
+    async def reset_password(self, data: Input) -> None:
+        pass

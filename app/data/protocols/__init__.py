@@ -32,5 +32,6 @@ from .video import (
 from .photo import ManagePhotoRepository
 from .account import (
     GetPasswordByUuidRepository,
-    UpdatePasswordRepository
+    UpdatePasswordRepository,
+    ResetPasswordRepository
 )

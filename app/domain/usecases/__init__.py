@@ -27,4 +27,7 @@ from .video import (
     ListFriendsVideos
 )
 from .photo import ManagePhoto
-from .account import UpdatePassword
+from .account import (
+    UpdatePassword,
+    ResetPassword
+)
