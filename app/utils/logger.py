@@ -1,3 +1,4 @@
+from app.models import TraceLog
 import os
 import sys
 
@@ -38,10 +39,19 @@ class Logger:
             cls.log(log_type, f"Unexpected Error {exception_type} {fname} {exception_traceback.tb_lineno}")
 
     @classmethod
-    def trace(cls, host, port, method: str, url: str, status_code: int, status_phrase: str, process_time: str):
+    def middleware(cls, data: TraceLog):
         point = "\033[95m\u2022\033[m"
-        log_url = f"{cls.METHOD[method]: <6} {point} http://{host}:{port}{url}"
+        log_url = f"{cls.METHOD[data.method]: <6} {point} http://{data.host}:{data.port}{data.url}"
+        status_color = 32 if data.status_code in (200, 201) else 31
+        log_status = f"\033[{status_color}m{data.status_code} {data.status_phrase}"
+        log_message = f"{log_url} {point} {log_status} \033[93m{data.process_time}ms\033[m"
+        cls.log("\033[95mTRACE", log_message)
+
+    @classmethod
+    def service(cls, url: str, status_code: str, status_phrase: str, process_time: str):
+        point = "\033[95m\u2022\033[m"
+        log_url = f"{cls.METHOD['POST']: <6} {point} {url}"
         status_color = 32 if status_code in (200, 201) else 31
         log_status = f"\033[{status_color}m{status_code} {status_phrase}"
         log_message = f"{log_url} {point} {log_status} \033[93m{process_time}ms\033[m"
-        cls.log("\033[95mTRACE", log_message)
+        cls.log("\033[95mSERVICE", log_message)

@@ -8,8 +8,9 @@ from pymongo.mongo_client import MongoClient
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    if not all(Lifespan.envs):
-        raise ValueError("Database Environment Variables must be specified")
+    check_db = bool(Lifespan.docker) or all(Lifespan.db_envs)
+    if not all(Lifespan.envs) and check_db:
+        raise ValueError("Environment Variables must be specified")
     client = MongoClient(Lifespan.mongo)
     try:
         client.admin.command('ping')

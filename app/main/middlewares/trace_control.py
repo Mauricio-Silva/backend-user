@@ -1,5 +1,6 @@
 from starlette.middleware.base import BaseHTTPMiddleware
 from app.schemas.common import CALL_NEXT_RESPONSE
+from app.models import TraceLog
 from app.utils import Logger
 from fastapi import Request
 import traceback
@@ -25,9 +26,13 @@ class TraceControl(BaseHTTPMiddleware):
         end_time = (time.time() - start_time) * 1000
         status_phrase = http.HTTPStatus(response.status_code).phrase
         process_time = "{0:.2f}".format(end_time)
+
         host = request.client.host or "0.0.0.0"
         port = request.client.port or 8000
+        method = request.method
+        status_code = response.status_code
 
-        Logger.trace(host, port, request.method, url, response.status_code, status_phrase, process_time)
+        data = TraceLog.make(host, port, method, url, status_code, status_phrase, process_time)
+        Logger.middleware(data)
 
         return response
