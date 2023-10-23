@@ -50,3 +50,8 @@ class RequiredRequestBody(HttpException):
 class InternalError(HttpException):
     def __init__(self, message: str) -> None:
         super().__init__(500, message)
+
+
+class FailedDependency(HttpException):
+    def __init__(self, message: str) -> None:
+        super().__init__(424, message)

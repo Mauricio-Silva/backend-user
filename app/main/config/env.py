@@ -35,7 +35,10 @@ DB_URI = DB_URL.format(
     cluster=DB_CLUSTER,
     domain=DB_DOMAIN
 )
+
 MONGO = DB_URI if not DOCKER_URI or not len(DOCKER_URI) else DOCKER_URI
+EMAIL_SERVICE_BASE_URL = getenv("EMAIL_SERVICE_BASE_URL")
+EMAIL_SERVICE_ACCESS_TOKEN = getenv("EMAIL_SERVICE_ACCESS_TOKEN")
 
 BROWSER = getenv("BROWSER", "google-chrome")
 HOST = "0.0.0.0" if "--host" in sys.argv else "127.0.0.1"

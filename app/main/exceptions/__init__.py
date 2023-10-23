@@ -8,6 +8,7 @@ from .custom_exceptions import (
     InvalidUuid,
     RequiredRequestBody,
     InternalError,
+    FailedDependency
 )
 from .custom_responses import (
     BaseExceptionResponse,

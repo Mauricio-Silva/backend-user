@@ -27,19 +27,25 @@ class Server:
 
 
 ENVS = (
+    env.DB_NAME,
+    env.COLLECTION_NAME,
+    env.SECRET_KEY,
+    env.EMAIL_SERVICE_BASE_URL,
+    env.EMAIL_SERVICE_ACCESS_TOKEN
+)
+DB_ENVS = (
     env.DB_SERVER,
     env.DB_USER,
     env.DB_PASSWORD,
     env.DB_CLUSTER,
-    env.DB_DOMAIN,
-    env.DB_NAME,
-    env.COLLECTION_NAME,
-    env.SECRET_KEY
+    env.DB_DOMAIN
 )
 
 
 class Lifespan:
     envs = ENVS
+    db_envs = DB_ENVS
+    docker = env.DOCKER_URI
     mongo = env.MONGO
     browser = env.BROWSER
     SWAGGER = env.SWAGGER
@@ -50,3 +56,8 @@ class JWT:
     algorithm = env.ALGORITHM
     expire = env.EXPIRE_TIME
     scheme = env.CRYPTO_SCHEME
+
+
+class Email:
+    base_url = env.EMAIL_SERVICE_BASE_URL
+    access_token = env.EMAIL_SERVICE_ACCESS_TOKEN

@@ -3,5 +3,6 @@ from .env import PREFIX
 from .config import (
     Server,
     Lifespan,
-    JWT
+    JWT,
+    Email
 )
