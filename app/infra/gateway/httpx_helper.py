@@ -2,7 +2,7 @@ from app.main.config import Email
 from app.main.exceptions import FailedDependency
 from json.decoder import JSONDecodeError
 from httpx import AsyncClient, ConnectError, TimeoutException
-from app.utils import Logger
+from app.utils.logger import Logger
 import http
 import time
 

@@ -1,6 +1,5 @@
 from typing import Any, cast
 
-
 ha = cast(
     Any,
     {
@@ -16,4 +15,6 @@ ha = cast(
 
 x = bool(None) or all([True, True])
 
-print(x)
+# print(x)
+
+print("bbb<a>bbb".count("x"))

@@ -15,7 +15,7 @@ from .projections import (
 )
 from app.domain.models import VideoModelOut
 from app.models import AddVideoDocument
-from app.utils import VideosListReducer
+from app.utils.videos_reducer import VideosListReducer
 from bson import ObjectId
 
 

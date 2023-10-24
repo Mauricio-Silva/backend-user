@@ -1,7 +1,7 @@
 from starlette.middleware.base import BaseHTTPMiddleware
 from app.schemas.common import CALL_NEXT_RESPONSE
 from app.models import TraceLog
-from app.utils import Logger
+from app.utils.logger import Logger
 from fastapi import Request
 import traceback
 import http

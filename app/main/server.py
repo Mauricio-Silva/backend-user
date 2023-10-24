@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.main.config import Server
-from app.utils import lifespan, Logger
+from app.utils.logger import Logger
+from app.utils.lifespan_events import lifespan
 from app.main.routes import ROUTES
 from app.main.exceptions import ExceptionHandler
 from app.main.middlewares import TraceControl

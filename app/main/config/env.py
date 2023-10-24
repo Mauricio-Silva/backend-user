@@ -8,35 +8,28 @@ load_dotenv()
 
 
 PREFIX = "/snapcut/api"
-APP_TITLE = getenv("APP_TITLE", "FastAPIApp")
+APP_TITLE = "Backend-User"
 APP_PORT = int(getenv("APP_PORT", 8000))
-APP_VERSION = getenv("APP_VERSION", "v1.0")
-APP_SUMMARY = getenv("APP_SUMMARY", "summary")
-APP_DESCRIPTION = getenv("APP_DESCRIPTION", "description")
+APP_VERSION = "v1.0.0"
+APP_SUMMARY = "A service to manage users' accounts experience"
+APP_DESCRIPTION = """
+<!-- cSpell:disable -->
+Instituto Federal de Educação, Ciência e Tecnologia de Mato Grosso do Sul - Três Lagoas <br/>
+Tecnologia em Análise e Desenvolvimento de Sistemas - TADS4 <br/>
+Eletiva: Rede Social
 
-if APP_DESCRIPTION.startswith("path:"):
-    with open(APP_DESCRIPTION.removeprefix("path:")) as file:
-        APP_DESCRIPTION = file.read()
+**SnapCut** - Social media for sharing videos
+"""
 
-DB_SERVER = getenv("DB_SERVER")
-DB_USER = getenv("DB_USER")
-DB_PASSWORD = getenv("DB_PASSWORD")
-DB_CLUSTER = getenv("DB_CLUSTER")
-DB_DOMAIN = getenv("DB_DOMAIN")
-DB_NAME = getenv("DB_NAME")
-COLLECTION_NAME = getenv("COLLECTION_NAME")
+MONGODB_URI = getenv("MONGODB_URI")
+PASSWORD = getenv("PASSWORD")
 
-DOCKER_URI = getenv("DOCKER_URI")
-DB_URL = "{server}://{user}:{password}@{cluster}.{domain}"
-DB_URI = DB_URL.format(
-    server=DB_SERVER,
-    user=DB_USER,
-    password=quote_plus(DB_PASSWORD),
-    cluster=DB_CLUSTER,
-    domain=DB_DOMAIN
-)
+if MONGODB_URI is not None and PASSWORD is not None:
+    MONGODB_URI = MONGODB_URI.replace("<password>", quote_plus(PASSWORD))
 
-MONGO = DB_URI if not DOCKER_URI or not len(DOCKER_URI) else DOCKER_URI
+DATABASE = getenv("DATABASE")
+COLLECTION = getenv("COLLECTION")
+
 EMAIL_SERVICE_BASE_URL = getenv("EMAIL_SERVICE_BASE_URL")
 EMAIL_SERVICE_ACCESS_TOKEN = getenv("EMAIL_SERVICE_ACCESS_TOKEN")
 

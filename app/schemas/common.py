@@ -4,10 +4,12 @@ from starlette.responses import Response
 from fastapi import Request, Path, Query
 from datetime import datetime
 from bson import ObjectId
-from app.utils import (
+from app.utils.serializations import (
     serialize_object_id,
     serialize_datetime,
-    serialize_list,
+    serialize_list
+)
+from app.utils.custom_types import (
     UUID_VALIDATOR,
     SEARCH_VALIDATOR
 )

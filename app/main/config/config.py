@@ -26,27 +26,22 @@ class Server:
     origin = ORIGIN
 
 
-ENVS = (
-    env.DB_NAME,
-    env.COLLECTION_NAME,
+ENVS = [
+    env.MONGODB_URI,
+    env.DATABASE,
+    env.COLLECTION,
     env.SECRET_KEY,
     env.EMAIL_SERVICE_BASE_URL,
     env.EMAIL_SERVICE_ACCESS_TOKEN
-)
-DB_ENVS = (
-    env.DB_SERVER,
-    env.DB_USER,
-    env.DB_PASSWORD,
-    env.DB_CLUSTER,
-    env.DB_DOMAIN
-)
+]
+
+if env.MONGODB_URI is not None and env.MONGODB_URI.count("<password>"):
+    ENVS.append(env.PASSWORD)
 
 
 class Lifespan:
     envs = ENVS
-    db_envs = DB_ENVS
-    docker = env.DOCKER_URI
-    mongo = env.MONGO
+    mongo_uri = env.MONGODB_URI
     browser = env.BROWSER
     SWAGGER = env.SWAGGER
 
