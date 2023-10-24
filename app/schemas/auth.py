@@ -25,3 +25,8 @@ class PasswordUpdate(BaseModel):
 
 class PasswordReset(BaseModel):
     email: EMAIL_VALIDATOR = Field(..., min_length=6, max_length=70)
+
+
+class SetNewPassword(BaseModel):
+    uuid: SkipJsonSchema[str | None] = Field(default=None)
+    password: PASSWORD_VALIDATOR = Field(..., min_length=6, max_length=20)

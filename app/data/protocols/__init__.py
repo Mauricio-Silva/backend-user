@@ -33,5 +33,6 @@ from .photo import ManagePhotoRepository
 from .account import (
     GetPasswordByUuidRepository,
     UpdatePasswordRepository,
-    ResetPasswordRepository
+    ResetPasswordRepository,
+    SetNewPasswordRepository
 )

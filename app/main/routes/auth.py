@@ -4,14 +4,16 @@ from fastapi import Request, Body, Depends
 from app.main.factories import (
     make_db_auth_login,
     make_db_update_password,
-    make_db_reset_password
+    make_db_reset_password,
+    make_db_set_new_password
 )
 from app.schemas.common import MessageResponse
 from app.schemas.auth import (
     UserLogin,
     LoginOut,
     PasswordUpdate,
-    PasswordReset
+    PasswordReset,
+    SetNewPassword
 )
 from app.main.exceptions import RequiredRequestBody, InvalidUuid
 from app.infra.auth import JwtBearer
@@ -82,4 +84,26 @@ async def reset_password(
 
     return MessageResponse(message="Email to reset password successfully sent")
 
-# NOTE: set-new-password
+
+@router.post(
+    "/set-new-password",
+    status_code=200,
+    summary="Reset User Password",
+    response_description="Resetting Password",
+    response_model=MessageResponse
+)
+async def set_new_password(
+    uuid: Annotated[str, Depends(JwtBearer())],
+    data: Annotated[SetNewPassword, Body()]
+):
+    if not data:
+        raise RequiredRequestBody()
+
+    if not ObjectId.is_valid(uuid):
+        raise InvalidUuid("user")
+
+    data.uuid = uuid
+    db_set_new_password = make_db_set_new_password()
+    await db_set_new_password.set_new_password(data)
+
+    return MessageResponse(message="New Password successfully setted")

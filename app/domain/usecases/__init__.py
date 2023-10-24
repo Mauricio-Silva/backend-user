@@ -29,5 +29,6 @@ from .video import (
 from .photo import ManagePhoto
 from .account import (
     UpdatePassword,
-    ResetPassword
+    ResetPassword,
+    SetNewPassword
 )

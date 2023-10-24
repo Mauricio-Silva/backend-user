@@ -1,6 +1,10 @@
 from app.main.exceptions import Unauthorized
 from .jwt_auth_repository import JwtRepository
 from fastapi import Header, Request
+from fastapi.security import OAuth2
+from typing import Any, cast
+
+# TODO: implements OAuth2AuthorizationCodeBearer (OAuth2)
 
 
 class JwtBearer:
@@ -12,6 +16,7 @@ class JwtBearer:
 
     def __init__(self):
         self.__jwt_repository = JwtRepository()
+        # super().__init__()
 
     async def __call__(self, request: Request, jwt_token_bearer: str = BEARER):
 

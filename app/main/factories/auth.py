@@ -1,7 +1,8 @@
 from app.data.usecases.auth import (
     AuthLogin,
     DbUpdatePassword,
-    DbResetPassword
+    DbResetPassword,
+    DbSetNewPassword
 )
 from app.infra.mongo import UserMongoRepository, AccountMongoRepository
 from app.infra.auth import JwtRepository
@@ -42,4 +43,13 @@ def make_db_reset_password(request: Request) -> DbResetPassword:
         user_mongo_repository,
         jwt_repository,
         email_service
+    )
+
+
+def make_db_set_new_password() -> DbSetNewPassword:
+    jwt_repository = JwtRepository()
+    account_mongo_repository = AccountMongoRepository()
+    return DbSetNewPassword(
+        jwt_repository,
+        account_mongo_repository
     )
