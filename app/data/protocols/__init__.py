@@ -34,5 +34,6 @@ from .account import (
     GetPasswordByUuidRepository,
     UpdatePasswordRepository,
     ResetPasswordRepository,
-    SetNewPasswordRepository
+    SetNewPasswordRepository,
+    CheckUserEmailRepository
 )

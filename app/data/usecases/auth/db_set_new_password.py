@@ -14,6 +14,6 @@ class DbSetNewPassword(SetNewPassword):
         self.__hash_user_password_repository = hash_user_password_repository
         self.__set_new_password_repository = set_new_password_repository
 
-    async def reset_password(self, data: SetNewPassword.Input) -> None:
+    async def set_new_password(self, data: SetNewPassword.Input) -> None:
         data.password = self.__hash_user_password_repository.hash_password(data.password)
         await self.__set_new_password_repository.set_new_password(data)

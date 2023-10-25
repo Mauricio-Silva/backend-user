@@ -5,7 +5,8 @@ from app.main.factories import (
     make_db_auth_login,
     make_db_update_password,
     make_db_reset_password,
-    make_db_set_new_password
+    make_db_set_new_password,
+    make_db_validate_email
 )
 from app.schemas.common import MessageResponse
 from app.schemas.auth import (
@@ -107,3 +108,20 @@ async def set_new_password(
     await db_set_new_password.set_new_password(data)
 
     return MessageResponse(message="New Password successfully setted")
+
+
+@router.post(
+    "/check-email",
+    status_code=200,
+    summary="Validate User Email",
+    response_description="Validating Email",
+    response_model=MessageResponse
+)
+async def validate_user_email(uuid: Annotated[str, Depends(JwtBearer())]):
+    if not ObjectId.is_valid(uuid):
+        raise InvalidUuid("user")
+
+    db_validate_email = make_db_validate_email()
+    await db_validate_email.validate_email(uuid)
+
+    return MessageResponse(message="Email successfully validated")

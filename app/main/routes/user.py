@@ -1,6 +1,6 @@
 from fastapi.routing import APIRouter
 from typing import Annotated
-from fastapi import Body, Depends
+from fastapi import Body, Depends, Request
 from app.main.factories import (
     make_db_list_users,
     make_db_personal_profile,
@@ -10,7 +10,8 @@ from app.main.factories import (
     make_db_update_user,
     make_db_delete_user,
     make_db_disable_user,
-    make_db_enable_user
+    make_db_enable_user,
+    make_db_check_email
 )
 from app.schemas.user import (
     UserOut,
@@ -105,12 +106,18 @@ async def search_profile(q: QUERY_SEARCH):
     response_description="Profile Created",
     response_model=UserOut
 )
-async def create_profile(data: Annotated[UserCreate, Body()]):
+async def create_profile(
+    request: Request,
+    data: Annotated[UserCreate, Body()]
+):
     if not data:
         raise RequiredRequestBody()
 
     db_create_user = make_db_create_user()
     user = await db_create_user.create(data)
+
+    db_check_email = make_db_check_email(request)
+    await db_check_email.verify_email(user)
 
     return UserOut(message="User created", data=user)
 

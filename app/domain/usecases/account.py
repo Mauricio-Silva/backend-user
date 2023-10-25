@@ -18,6 +18,7 @@ class UpdatePassword(metaclass=ABCMeta):
 
 class ResetPasswordInput(BaseModel):
     email: str
+    username: str
     url: str | None = None
 
 
@@ -39,4 +40,25 @@ class SetNewPassword(metaclass=ABCMeta):
 
     @abstractmethod
     async def set_new_password(self, data: Input) -> None:
+        pass
+
+
+class CheckUserEmailInput(BaseModel):
+    uuid: str
+    email: str
+    username: str
+    url: str | None = None
+
+
+class CheckUserEmail(metaclass=ABCMeta):
+    Input = CheckUserEmailInput
+
+    @abstractmethod
+    async def verify_email(self, data: Input) -> None:
+        pass
+
+
+class ValidateUserEmail(metaclass=ABCMeta):
+    @abstractmethod
+    async def validate_email(self, uuid: str) -> None:
         pass

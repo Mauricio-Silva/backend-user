@@ -4,12 +4,12 @@ Social media for sharing videos
 
 ### Todo
 
-- [ ] change db env to simple full url  
 - [ ] implements OAuth2AuthorizationCodeBearer  
 - [ ] tests  
 
 ### Done
 
+- [ ] change db env to simple full url  
 - [ ] recuperate password endpoint  
 - [ ] Add service email  
 - [ ] Move some exceptions from routes to usecases  

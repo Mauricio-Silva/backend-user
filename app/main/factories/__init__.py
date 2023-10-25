@@ -13,7 +13,9 @@ from .auth import (
     make_db_auth_login,
     make_db_update_password,
     make_db_reset_password,
-    make_db_set_new_password
+    make_db_set_new_password,
+    make_db_check_email,
+    make_db_validate_email
 )
 from .friend import (
     make_db_list_friends,

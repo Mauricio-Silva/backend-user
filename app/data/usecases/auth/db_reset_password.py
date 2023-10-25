@@ -28,9 +28,13 @@ class DbResetPassword(ResetPassword):
         if not user:
             raise NotFound("User")
 
-        base_url = f"{self.__request.base_url}snapcut/api"
-        encode_token_input = EncodeTokenInput(url=base_url, uuid=str(user.uuid))
+        url = f"{self.__request.base_url}/snapcut/api"
+        encode_token_input = EncodeTokenInput(url=url, uuid=str(user.uuid))
         access_token = self.__encode_token_repository.encode_token(encode_token_input)
 
-        data.url = f"{base_url}/auth/set-new-password?token={access_token}"
+        # TODO: set the frontend-url
+
+        data.username = user.username
+        data.url = f"<frontend-url>?token={access_token}"
+
         await self.__reset_password_repository.reset_password(data)

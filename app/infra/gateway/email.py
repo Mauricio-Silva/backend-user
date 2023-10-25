@@ -1,13 +1,15 @@
-from app.data.protocols import ResetPasswordRepository
+from app.data.protocols import ResetPasswordRepository, CheckUserEmailRepository
 from .httpx_helper import HttpxHelper
 
 
-class EmailService(HttpxHelper, ResetPasswordRepository):
-    RESET_PATH = "reset-password"
-
+class EmailService(HttpxHelper, ResetPasswordRepository, CheckUserEmailRepository):
     def __init__(self):
         super().__init__()
 
     async def reset_password(self, data: ResetPasswordRepository.Input) -> None:
         body = data.model_dump()
-        await self.api_call(self.RESET_PATH, body)
+        await self.api_call("reset-password", body)
+
+    async def verify_email(self, data: CheckUserEmailRepository.Input) -> None:
+        body = data.model_dump()
+        await self.api_call("check-email", body)

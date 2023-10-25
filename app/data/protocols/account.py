@@ -2,7 +2,9 @@ from abc import ABCMeta, abstractmethod
 from app.domain.usecases import (
     UpdatePassword,
     ResetPassword,
-    SetNewPassword
+    SetNewPassword,
+    CheckUserEmail,
+    ValidateUserEmail
 )
 
 
@@ -33,4 +35,12 @@ class SetNewPasswordRepository(metaclass=ABCMeta):
 
     @abstractmethod
     async def set_new_password(self, data: Input) -> None:
+        pass
+
+
+class CheckUserEmailRepository(metaclass=ABCMeta):
+    Input = CheckUserEmail.Input
+
+    @abstractmethod
+    async def verify_email(self, data: Input) -> None:
         pass

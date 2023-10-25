@@ -2,7 +2,9 @@ from app.data.usecases.auth import (
     AuthLogin,
     DbUpdatePassword,
     DbResetPassword,
-    DbSetNewPassword
+    DbSetNewPassword,
+    DbCheckUserEmail,
+    DbValidateUserEmail
 )
 from app.infra.mongo import UserMongoRepository, AccountMongoRepository
 from app.infra.auth import JwtRepository
@@ -53,3 +55,18 @@ def make_db_set_new_password() -> DbSetNewPassword:
         jwt_repository,
         account_mongo_repository
     )
+
+
+def make_db_check_email(request: Request) -> DbCheckUserEmail:
+    jwt_repository = JwtRepository(reset_expire=20)
+    email_service = EmailService()
+    return DbCheckUserEmail(
+        request,
+        jwt_repository,
+        email_service
+    )
+
+
+def make_db_validate_email() -> DbValidateUserEmail:
+    user_mongo_repository = UserMongoRepository()
+    return DbValidateUserEmail(user_mongo_repository)
