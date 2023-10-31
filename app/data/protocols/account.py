@@ -39,7 +39,7 @@ class SetNewPasswordRepository(metaclass=ABCMeta):
 
 
 class CheckUserEmailRepository(metaclass=ABCMeta):
-    Input = CheckUserEmail.Input
+    Input = CheckUserEmail.Email
 
     @abstractmethod
     async def verify_email(self, data: Input) -> None:

@@ -8,8 +8,8 @@ class EmailService(HttpxHelper, ResetPasswordRepository, CheckUserEmailRepositor
 
     async def reset_password(self, data: ResetPasswordRepository.Input) -> None:
         body = data.model_dump()
-        await self.api_call("reset-password", body)
+        await self.api_call("reset_password", body)
 
     async def verify_email(self, data: CheckUserEmailRepository.Input) -> None:
         body = data.model_dump()
-        await self.api_call("check-email", body)
+        await self.api_call("account_confirmation", body)

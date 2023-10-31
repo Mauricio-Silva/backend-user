@@ -15,7 +15,7 @@ class CreateUserDocument(BaseModel):
     videos: list | None = Field(default=None)
     friends: list | None = Field(default=None)
     verified_at: datetime = Field(default=datetime.now())
-    is_enabled: bool = Field(default=True)
+    is_enabled: bool = Field(default=False)
 
 
 class UpdateUserDocument(BaseModel):

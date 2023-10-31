@@ -29,6 +29,9 @@ class AuthLogin(UserLogin):
         if not user:
             raise NotFound("User")
 
+        if not user.is_enabled:
+            raise Forbidden("User account must be enabled")
+
         valid_password = self.__check_user_password_repository.verify_password(data.password, user.password)
 
         if not valid_password:

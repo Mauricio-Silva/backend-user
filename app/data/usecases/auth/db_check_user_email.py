@@ -24,7 +24,11 @@ class DbCheckUserEmail(CheckUserEmail):
 
         access_token = self.__encode_token_repository.encode_token(encode_token_input)
         # TODO: create endpoint to receive this
-        data.url = f"<frontend-url>?token={access_token}"
-        data = CheckUserEmail.Input(**data.model_dump())
+        email = CheckUserEmail.Email(
+            to=data.email,
+            subject="Confirmação de conta",
+            username=data.username,
+            link=f"frontend-url?token={access_token}"
+        )
 
-        await self.__check_user_email_repository.verify_email(data)
+        await self.__check_user_email_repository.verify_email(email)

@@ -33,8 +33,11 @@ class DbResetPassword(ResetPassword):
         access_token = self.__encode_token_repository.encode_token(encode_token_input)
 
         # TODO: set the frontend-url
+        email = ResetPassword.Email(
+            to=data.email,
+            subject="Redefinição de Senha",
+            username=data.username,
+            link=f"frontend-url?token={access_token}"
+        )
 
-        data.username = user.username
-        data.url = f"<frontend-url>?token={access_token}"
-
-        await self.__reset_password_repository.reset_password(data)
+        await self.__reset_password_repository.reset_password(email)
