@@ -17,6 +17,7 @@ from app.schemas.auth import (
     SetNewPassword
 )
 from app.main.exceptions import RequiredRequestBody, InvalidUuid
+from app.infra.gateway import EmailApi
 from app.infra.auth import JwtBearer
 from app.main.config import PREFIX
 from bson import ObjectId
@@ -71,7 +72,8 @@ async def update_password(
     status_code=200,
     summary="Reset User Password",
     response_description="Resetting Password",
-    response_model=MessageResponse
+    response_model=MessageResponse,
+    dependencies=[Depends(EmailApi())]
 )
 async def reset_password(
     request: Request,
@@ -89,8 +91,8 @@ async def reset_password(
 @router.post(
     "/set-new-password",
     status_code=200,
-    summary="Reset User Password",
-    response_description="Resetting Password",
+    summary="Set New Password",
+    response_description="Setting New Password",
     response_model=MessageResponse
 )
 async def set_new_password(
@@ -115,7 +117,8 @@ async def set_new_password(
     status_code=200,
     summary="Validate User Email",
     response_description="Validating Email",
-    response_model=MessageResponse
+    response_model=MessageResponse,
+    dependencies=[Depends(EmailApi())]
 )
 async def validate_user_email(uuid: Annotated[str, Depends(JwtBearer())]):
     if not ObjectId.is_valid(uuid):

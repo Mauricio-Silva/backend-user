@@ -27,6 +27,7 @@ from app.main.exceptions import (
     RequiredRequestBody
 )
 from app.infra.auth import JwtBearer
+from app.infra.gateway import EmailApi
 from app.main.config import PREFIX
 from bson import ObjectId
 
@@ -83,7 +84,7 @@ async def get_profile_by_id(uuid: PATH_UUID):
 
 
 @router.get(
-    "/",
+    "",
     status_code=200,
     summary="Search Profile by Name or Username",
     response_description="Profile(s) found",
@@ -100,11 +101,12 @@ async def search_profile(q: QUERY_SEARCH):
 
 
 @router.post(
-    "/",
+    "",
     status_code=201,
     summary="Create a new Profile",
     response_description="Profile Created",
-    response_model=UserOut
+    response_model=UserOut,
+    dependencies=[Depends(EmailApi())]
 )
 async def create_profile(
     request: Request,
@@ -123,7 +125,7 @@ async def create_profile(
 
 
 @router.put(
-    "/",
+    "",
     status_code=200,
     summary="Update a Profile",
     response_description="Profile Updated",
@@ -147,7 +149,7 @@ async def update_profile(
 
 
 @router.delete(
-    "/",
+    "",
     status_code=200,
     summary="Delete a Profile",
     response_description="Profile Deleted",
