@@ -17,7 +17,7 @@ router = APIRouter(prefix=f"{PREFIX}/photo", tags=['Photo'])
 
 
 @router.patch(
-    "/",
+    "",
     status_code=200,
     summary="Manage Photo",
     response_description="Photo managed",
