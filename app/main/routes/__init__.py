@@ -3,9 +3,11 @@ from .auth import router as auth_router
 from .friend import router as friend_router
 from .video import router as video_router
 from .photo import router as photo_router
+from .admin import router as admin_router
 
 
 ROUTES = (
+    admin_router,
     auth_router,
     user_router,
     friend_router,

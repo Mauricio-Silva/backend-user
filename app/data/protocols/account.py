@@ -44,3 +44,11 @@ class CheckUserEmailRepository(metaclass=ABCMeta):
     @abstractmethod
     async def verify_email(self, data: Input) -> None:
         pass
+
+
+class ValidateAccountRepository(metaclass=ABCMeta):
+    Output = ValidateUserEmail.Output
+
+    @abstractmethod
+    async def validate(self, uuid: str) -> Output:
+        pass

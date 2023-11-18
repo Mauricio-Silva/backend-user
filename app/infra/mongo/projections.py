@@ -11,6 +11,14 @@ PHOTO_PROJECTION = {"_id": 0, "photo": 1}
 
 PASSWORD_PROJECTION = {"_id": 0, "password": 1}
 
+DISABLE_ACCOUNTS = {"is_enabled": 1, "create_at": 1}
+
+ADMIN_PROJECTION = {
+    "name": 1,
+    "username": 1,
+    "email": 1
+}
+
 PROFILE_MODEL_OUT_PROJECTION = {
     "create_at": 0,
     "update_at": 0,

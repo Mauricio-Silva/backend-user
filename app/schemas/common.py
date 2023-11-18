@@ -33,6 +33,7 @@ LIST = Annotated[
 
 PATH_UUID = Annotated[UUID_VALIDATOR, Path(description="UUID")]
 QUERY_SEARCH = Annotated[SEARCH_VALIDATOR, Query(alias="search", description="Name or Username")]
+ACCOUNT_SEARCH = Annotated[SEARCH_VALIDATOR, Query(alias="search", description="Email")]
 CALL_NEXT_RESPONSE = Callable[[Request], Awaitable[Response]]
 
 

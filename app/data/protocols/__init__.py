@@ -35,5 +35,10 @@ from .account import (
     UpdatePasswordRepository,
     ResetPasswordRepository,
     SetNewPasswordRepository,
-    CheckUserEmailRepository
+    CheckUserEmailRepository,
+    ValidateAccountRepository
+)
+from .admin import (
+    ResendEmailRepository,
+    SearchAccountsRepository
 )

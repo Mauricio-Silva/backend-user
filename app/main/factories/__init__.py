@@ -30,3 +30,8 @@ from .video import (
     make_db_remove_video
 )
 from .photo import make_db_manage_photo
+from .admin import (
+    make_db_resend_email,
+    make_db_get_token,
+    make_db_search_accounts
+)

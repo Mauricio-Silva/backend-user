@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_serializer
+from pydantic import BaseModel, ConfigDict, Field, field_serializer
 from app.schemas.common import OBJECT_UUID
 from bson import ObjectId
 
@@ -8,8 +8,7 @@ class LoginModelOut(BaseModel):
     username: str
     access_token: str
 
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     @field_serializer('uuid')
     def serialize_uuid(self, uuid: ObjectId):
@@ -21,3 +20,16 @@ class TokenModelOut(BaseModel):
     subject: str = Field(validation_alias="sub")
     expiration: int = Field(validation_alias="exp")
     service: str = Field(default="backend-user")
+
+
+class AccountOut(BaseModel):
+    uuid: OBJECT_UUID = Field(validation_alias="_id")
+    name: str
+    username: str
+    email: str
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    @field_serializer('uuid')
+    def serialize_uuid(self, uuid: ObjectId):
+        return str(ObjectId(uuid))

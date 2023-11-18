@@ -1,17 +1,17 @@
 from app.domain.usecases import ValidateUserEmail
-from app.data.protocols import EnableUserRepository
+from app.data.protocols import ValidateAccountRepository
 from app.main.exceptions import NotFound
 
 
 class DbValidateUserEmail(ValidateUserEmail):
     def __init__(
         self,
-        enable_user_email_repository: EnableUserRepository
+        validate_account_repository: ValidateAccountRepository
     ) -> None:
-        self.__enable_user_email_repository = enable_user_email_repository
+        self.__validate_account_repository = validate_account_repository
 
-    async def validate_email(self, uuid: str) -> None:
-        user = await self.__enable_user_email_repository.enable(uuid)
+    async def validate_email(self, uuid: str) -> ValidateUserEmail.Output:
+        user = await self.__validate_account_repository.validate(uuid)
 
         if user is None:
             raise NotFound("User")

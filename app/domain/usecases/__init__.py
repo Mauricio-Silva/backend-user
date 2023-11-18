@@ -34,3 +34,8 @@ from .account import (
     CheckUserEmail,
     ValidateUserEmail
 )
+from .admin import (
+    ResendEmail,
+    GetToken,
+    SearchAccounts
+)
