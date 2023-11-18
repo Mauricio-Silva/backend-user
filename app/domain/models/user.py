@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from app.schemas.common import OBJECT_UUID, DATETIME, LIST
 
 
@@ -15,8 +15,7 @@ class UserModelOut(BaseModel):
     verified_at: DATETIME | None = None
     is_enabled: bool | None = None
 
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 class UserLoginModelOut(UserModelOut):
@@ -34,5 +33,4 @@ class ProfileModelOut(BaseModel):
     videos: LIST = None
     friends: LIST = None
 
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
