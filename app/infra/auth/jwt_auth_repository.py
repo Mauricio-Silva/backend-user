@@ -19,8 +19,8 @@ class JwtRepository(
     EncodeTokenRepository,
     DecodeTokenRepository
 ):
-    def __init__(self, reset_expire: int = None) -> None:
-        self.__expire = JWT.expire if not reset_expire else reset_expire
+    def __init__(self, expire: int = None) -> None:
+        self.__expire = JWT.expire if not expire else expire
         self.__crypt_context = CryptContext(schemes=[JWT.scheme], deprecated="auto")
 
     def hash_password(self, plain_password: str) -> str:

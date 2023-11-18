@@ -20,23 +20,23 @@ ORIGIN = dict(
     allow_headers=["*"],
 )
 
-
-class Server:
-    app = FASTAPI
-    origin = ORIGIN
-
-
 ENVS = [
     env.MONGODB_URI,
     env.DATABASE,
     env.COLLECTION,
     env.SECRET_KEY,
+    env.ACCESS_KEY,
     env.EMAIL_SERVICE_BASE_URL,
     env.EMAIL_SERVICE_ACCESS_TOKEN
 ]
 
 if env.MONGODB_URI is not None and env.MONGODB_URI.count("<password>"):
     ENVS.append(env.PASSWORD)
+
+
+class Server:
+    app = FASTAPI
+    origin = ORIGIN
 
 
 class Lifespan:
@@ -49,7 +49,7 @@ class Lifespan:
 class JWT:
     secret = env.SECRET_KEY
     algorithm = env.ALGORITHM
-    expire = env.EXPIRE_TIME
+    expire = env.EXPIRE_ACCESS_TOKEN_TIME
     scheme = env.CRYPTO_SCHEME
 
 
