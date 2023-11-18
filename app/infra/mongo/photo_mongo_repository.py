@@ -43,7 +43,9 @@ class PhotoMongoRepository(ManagePhotoRepository):
                 manage_photo_update = {"$set": {self.KEY: update[1]}}
                 result = collection.update_one({"_id": ObjectId(data.user_uuid)}, manage_photo_update)
 
-                if result.modified_count == 0 and result.matched_count == 1:
+                if result.matched_count == 0:
+                    raise NotFound("User")
+                if result.matched_count == 1 and result.modified_count == 0:
                     prefix = operation.value.removesuffix("ed")
                     raise InternalError(f"Error in {prefix}ing video")
 

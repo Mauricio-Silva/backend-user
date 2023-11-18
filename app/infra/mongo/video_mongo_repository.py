@@ -50,7 +50,9 @@ class VideoMongoRepository(
             add_video_update = {"$set": {self.KEY: videos}}
 
             result = collection.update_one({"_id": ObjectId(data.user_uuid)}, add_video_update)
-            if result.modified_count == 0 and result.matched_count == 1:
+            if result.matched_count == 0:
+                raise NotFound("User")
+            if result.matched_count == 1 and result.modified_count == 0:
                 raise InternalError("Error in adding video")
 
     async def remove_video(self, data: RemoveVideoRepository.Input) -> None:
@@ -68,7 +70,9 @@ class VideoMongoRepository(
             remove_video_update = {"$set": {self.KEY: videos}}
 
             result = collection.update_one({"_id": ObjectId(data.user_uuid)}, remove_video_update)
-            if result.modified_count == 0 and result.matched_count == 1:
+            if result.matched_count == 0:
+                raise NotFound("User")
+            if result.matched_count == 1 and result.modified_count == 0:
                 raise InternalError("Error in removing video")
 
     async def list_my_videos(self, uuid: str) -> ListVideosRepository.Output:

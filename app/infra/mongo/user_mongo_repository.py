@@ -89,7 +89,9 @@ class UserMongoRepository(
         update_user = update_user_document.model_dump(exclude_none=True)
         with MongoConnection() as collection:
             result = collection.update_one({"_id": ObjectId(data.uuid)}, {"$set": update_user})
-            if result.modified_count == 0 and result.matched_count == 1:
+            if result.matched_count == 0:
+                raise NotFound("User")
+            if result.matched_count == 1 and result.modified_count == 0:
                 raise InternalError("Error in updating user")
             result = collection.find_one({"_id": ObjectId(data.uuid)}, USER_MODEL_OUT_PROJECTION)
             return None if not result else UserModelOut(**result)
@@ -103,7 +105,9 @@ class UserMongoRepository(
     async def disable(self, uuid: str) -> DisableUserRepository.Output:
         with MongoConnection() as collection:
             result = collection.update_one({"_id": ObjectId(uuid)}, {"$set": {"is_enabled": False}})
-            if result.modified_count == 0 and result.matched_count == 1:
+            if result.matched_count == 0:
+                raise NotFound("User")
+            if result.matched_count == 1 and result.modified_count == 0:
                 raise InternalError("Error in deactivating user")
             result = collection.find_one({"_id": ObjectId(uuid)}, USER_MODEL_OUT_PROJECTION)
             return None if not result else UserModelOut(**result)
@@ -111,7 +115,9 @@ class UserMongoRepository(
     async def enable(self, uuid: str) -> EnableUserRepository.Output:
         with MongoConnection() as collection:
             result = collection.update_one({"_id": ObjectId(uuid)}, {"$set": {"is_enabled": True}})
-            if result.modified_count == 0 and result.matched_count == 1:
+            if result.matched_count == 0:
+                raise NotFound("User")
+            if result.matched_count == 1 and result.modified_count == 0:
                 raise InternalError("Error in activating user")
             result = collection.find_one({"_id": ObjectId(uuid)}, USER_MODEL_OUT_PROJECTION)
             return None if not result else UserModelOut(**result)
