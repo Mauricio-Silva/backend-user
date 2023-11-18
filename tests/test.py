@@ -1,5 +1,13 @@
 from typing import Any, cast
-from pydantic import BaseModel
+from time import sleep
+import schedule
+import sched
+import time
+import threading
+import asyncio
+import contextvars
+import _thread
+
 
 ha = cast(
     Any,
@@ -10,34 +18,54 @@ ha = cast(
         "scopes": {"scope1": "role1", "scope2": "role2"},
     },
 )
-
 # print(ha)
 
 
-x = bool(None) or all([True, True])
-
-# print(x)
-
-
-class A1(BaseModel):
-    a: int
-    b: int
-    c: int
-    d: int
-    e: int
+class AA:
+    def make_usecase(self, **kwargs):
+        instance = self.__class__()
+        for key, value in kwargs.items():
+            setattr(instance, key, value)
+        return instance
 
 
-class B1(BaseModel):
-    a: int
-    b: int
+class DbListUsers:
+    def __init__(self, number: int) -> None:
+        self.numer = number
 
 
-def t(data: B1):
-    print(data.model_dump(exclude={"a"}))
+class MakeDbListUsersSut(AA):
+    def __init__(self) -> None:
+        self.list_users_repository_spy = 12
+
+    def make_usecase(self):
+        self.usecase = DbListUsers(self.list_users_repository_spy)
 
 
-x = A1(a=1, b=2, c=3, d=4, e=5)
-t(x)
+a = MakeDbListUsersSut()
+a.make_usecase()
+# print(a.usecase)
 
-y = B1(**x.model_dump())
-print(y)
+
+def task():
+    print("Doing")
+
+
+schedule.every(5).seconds.do(task)
+
+# while True:
+#     print("Here")
+#     schedule.run_pending()
+#     sleep(1)
+
+
+# s = sched.scheduler(time.time, time.sleep)
+# s.enter(1, 1, task)
+# s.run()
+
+
+task_thread = threading.Thread(target=task)
+task_thread.start()
+
+
+_thread.start_new_thread(task, ())

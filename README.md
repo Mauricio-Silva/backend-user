@@ -33,7 +33,11 @@ This application uses an external email service that must be configured by setti
 
 [JWT](https://jwt.io/) uses a secret private key, that you must specify by setting **SECRET_KEY**, and an algorithm (**ALGORITHM**, default is **HS256**) for signing the claims to encode, validate, and decode the JWT token.
 
-You can also specify a **CRYPTO_SCHEME** to be used to hash and verify the passwords (default is **bcrypt**), and the expiration time of the JWT token by setting **EXPIRE_MINUTES_TIME** (default is **120** minutes).
+For administration purposes and to make changes to other users of the application, you can rule as a superuser using a personal **ACCESS_KEY** that must be set.
+
+You can also specify a **CRYPTO_SCHEME** to be used to hash and verify the passwords (default is **bcrypt**), and the expiration time of the JWT token by setting **EXPIRE_ACCESS_TOKEN_TIME** (default is **480** minutes or **8** hours).
+
+Accounts must be verified within the time defined in **EXPIRE_CHECK_ACCOUNT_TIME** (default is **20** minutes), while passwords must be reset within the time defined in **EXPIRE_RESET_PASSWORD_TIME** (default is **10** minutes).
 
 ```bash
 # Generate a random secret key for JWT signing
@@ -60,11 +64,3 @@ $ make dev-reload
 $ make prod-run
 $ make prod-reload
 ```
-
-<!-- profile
-
-/profile/photo/:id
-
-/auth/forgot-password
-/auth/check-email
--->
