@@ -14,6 +14,7 @@ from app.schemas.admin import (
     LoginOut
 )
 from app.main.exceptions import RequiredRequestBody, RequiredQueryParam
+from app.utils.serializations import exceptions_responses
 from app.infra.auth import AccessKey
 from app.infra.gateway import EmailApi
 from app.main.config import PREFIX
@@ -28,16 +29,14 @@ router = APIRouter(prefix=f"{PREFIX}/admin", tags=['Admin'])
     summary="Resend Email",
     response_description="Resending Email",
     response_model=MessageResponse,
-    dependencies=[Depends(AccessKey()), Depends(EmailApi())]
+    dependencies=[Depends(AccessKey()), Depends(EmailApi())],
+    description=exceptions_responses(422, 404, 409, 500, 424),
 )
-async def resend_email(
-    request: Request,
-    data: Annotated[EmailResend, Body()]
-):
+async def resend_email(data: Annotated[EmailResend, Body()]):
     if not data:
         raise RequiredRequestBody()
 
-    db_resend_email = make_db_resend_email(request)
+    db_resend_email = make_db_resend_email()
     await db_resend_email.resend_email(data)
 
     return MessageResponse(message="Email resended successfully")
@@ -51,14 +50,11 @@ async def resend_email(
     response_model=LoginOut,
     dependencies=[Depends(AccessKey())]
 )
-async def get_token(
-    request: Request,
-    data: Annotated[AccountLogin, Body()]
-):
+async def get_token(data: Annotated[AccountLogin, Body()]):
     if not data:
         raise RequiredRequestBody()
 
-    db_get_token = make_db_get_token(request)
+    db_get_token = make_db_get_token()
     user = await db_get_token.get_token(data)
 
     return LoginOut(message="Login successfully", data=user)

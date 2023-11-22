@@ -1,3 +1,4 @@
+from app.main.exceptions import BaseExceptionResponse
 from . import env
 
 
@@ -6,7 +7,11 @@ FASTAPI = dict(
     summary=env.APP_SUMMARY,
     description=env.APP_DESCRIPTION,
     version=env.APP_VERSION,
-    docs_url="/"
+    docs_url="/",
+    responses={422: {
+        "model": BaseExceptionResponse,
+        "description": "Base Exception Response"
+    }}
 )
 
 ALLOW_ORIGINS = [
