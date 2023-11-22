@@ -4,6 +4,7 @@ from .video_mongo_repository import VideoMongoRepository
 from .photo_mongo_repository import PhotoMongoRepository
 from .account_mongo_repository import AccountMongoRepository
 from .background_task import BackgroundTask
+from .database import MongoConnection
 from .projections import (
     USER_MODEL_OUT_PROJECTION,
     LOGIN_MODEL_OUT_PROJECTION,

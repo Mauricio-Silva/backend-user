@@ -1,4 +1,4 @@
-from app.main.config import MongoConnection
+from .database import MongoConnection
 from app.data.protocols import (
     GetPasswordByUuidRepository,
     UpdatePasswordRepository,

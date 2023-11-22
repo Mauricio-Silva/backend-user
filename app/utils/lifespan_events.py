@@ -1,7 +1,8 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from app.main.config import Lifespan, MongoConnection
-from app.infra.mongo import BackgroundTask
+from app.main.config import Lifespan
+from app.infra.mongo import MongoConnection
+# from app.infra.mongo import BackgroundTask
 from .logger import Logger
 # import webbrowser
 
@@ -16,8 +17,8 @@ async def lifespan(_: FastAPI):
         pass
     # webbrowser.get(Lifespan.browser).open(Lifespan.swagger)
     Logger.info("\033[33mConnected to the MongoDB database\033[m")
-    background_task = BackgroundTask()
-    Logger.info("\033[33mNew Thread Running Background Task\033[m")
+    # background_task = BackgroundTask()
+    # Logger.info("\033[33mNew Thread Running Background Task\033[m")
     yield
-    background_task.thread_shutdown()
-    Logger.info("\033[33mBackground Task Thread Stopped\033[m")
+    # background_task.thread_shutdown()
+    # Logger.info("\033[33mBackground Task Thread Stopped\033[m")

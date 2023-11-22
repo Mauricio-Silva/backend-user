@@ -1,5 +1,5 @@
 from pymongo.mongo_client import MongoClient
-from .env import MONGODB_URI, DATABASE, COLLECTION
+from app.main.config.env import MONGODB_URI, DATABASE, COLLECTION
 from app.utils.logger import Logger
 
 

@@ -1,6 +1,7 @@
-from app.main.config import EXPIRE_CHECK_ACCOUNT_TIME, MongoConnection
+from app.main.config import EXPIRE_CHECK_ACCOUNT_TIME
 from .projections import DISABLE_ACCOUNTS
 from datetime import datetime, timedelta
+from .database import MongoConnection
 from app.utils.logger import Logger
 from threading import Thread
 from time import sleep
