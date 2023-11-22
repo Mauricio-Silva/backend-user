@@ -1,6 +1,8 @@
 __pycache__
 .pytest_cache
 
+TODO.md
+
 .venv
 .vscode
 .env

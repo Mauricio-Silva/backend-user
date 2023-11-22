@@ -4,11 +4,14 @@ Social media for sharing videos
 
 ### Todo
 
+- [ ] implement other returns (exceptions/errors) in swagger  
 - [ ] implements OAuth2AuthorizationCodeBearer  
 - [ ] tests  
 
 ### Done
 
+- [ ] move database to infra mongo  
+- [ ] get url from trace control  
 - [ ] change db env to simple full url  
 - [ ] recuperate password endpoint  
 - [ ] Add service email  
