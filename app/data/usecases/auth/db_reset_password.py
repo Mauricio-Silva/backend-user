@@ -6,18 +6,16 @@ from app.data.protocols import (
     ResetPasswordRepository
 )
 from app.main.exceptions import NotFound
-from fastapi import Request
+from app.main.config import CONTEXT_VAR
 
 
 class DbResetPassword(ResetPassword):
     def __init__(
         self,
-        request: Request,
         get_user_by_unique_repository: GetUserByUniqueRepository,
         encode_token_repository: EncodeTokenRepository,
         reset_password_repository: ResetPasswordRepository
     ) -> None:
-        self.__request = request
         self.__get_user_by_unique_repository = get_user_by_unique_repository
         self.__encode_token_repository = encode_token_repository
         self.__reset_password_repository = reset_password_repository
@@ -28,8 +26,7 @@ class DbResetPassword(ResetPassword):
         if not user:
             raise NotFound("User")
 
-        url = f"{self.__request.base_url}/snapcut/api"
-        encode_token_input = EncodeTokenInput(url=url, uuid=str(user.uuid))
+        encode_token_input = EncodeTokenInput(url=CONTEXT_VAR.get(), uuid=str(user.uuid))
         access_token = self.__encode_token_repository.encode_token(encode_token_input)
 
         # TODO: set the frontend-url

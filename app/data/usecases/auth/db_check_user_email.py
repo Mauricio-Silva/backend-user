@@ -4,23 +4,20 @@ from app.data.protocols import (
     CheckUserEmailRepository,
     EncodeTokenInput
 )
-from fastapi import Request
+from app.main.config import CONTEXT_VAR
 
 
 class DbCheckUserEmail(CheckUserEmail):
     def __init__(
         self,
-        request: Request,
         encode_token_repository: EncodeTokenRepository,
         check_user_email_repository: CheckUserEmailRepository
     ) -> None:
-        self.__request = request
         self.__encode_token_repository = encode_token_repository
         self.__check_user_email_repository = check_user_email_repository
 
     async def verify_email(self, data: CheckUserEmail.Input) -> None:
-        url = f"{self.__request.base_url}/snapcut/api"
-        encode_token_input = EncodeTokenInput(url=url, uuid=str(data.uuid))
+        encode_token_input = EncodeTokenInput(url=CONTEXT_VAR.get(), uuid=str(data.uuid))
 
         access_token = self.__encode_token_repository.encode_token(encode_token_input)
         # TODO: create endpoint to receive this

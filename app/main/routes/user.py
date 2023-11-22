@@ -1,6 +1,6 @@
 from fastapi.routing import APIRouter
 from typing import Annotated
-from fastapi import Body, Depends, Request
+from fastapi import Body, Depends
 from app.main.factories import (
     make_db_list_users,
     make_db_personal_profile,
@@ -108,17 +108,14 @@ async def search_profile(q: QUERY_SEARCH):
     response_model=UserOut,
     dependencies=[Depends(EmailApi())]
 )
-async def create_profile(
-    request: Request,
-    data: Annotated[UserCreate, Body()]
-):
+async def create_profile(data: Annotated[UserCreate, Body()]):
     if not data:
         raise RequiredRequestBody()
 
     db_create_user = make_db_create_user()
     user = await db_create_user.create(data)
 
-    db_check_email = make_db_check_email(request)
+    db_check_email = make_db_check_email()
     await db_check_email.verify_email(user)
 
     return UserOut(message="User created", data=user)

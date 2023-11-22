@@ -1,5 +1,6 @@
-from dotenv import load_dotenv
 from urllib.parse import quote_plus
+from contextvars import ContextVar
+from dotenv import load_dotenv
 from os import getenv
 import sys
 
@@ -7,7 +8,9 @@ import sys
 load_dotenv()
 
 
-PREFIX = "/snapcut/api"
+PREFIX = "/backend-user/api"
+CONTEXT_VAR = ContextVar("url", default=None)
+
 APP_TITLE = "Backend-User"
 APP_PORT = int(getenv("APP_PORT", 8000))
 APP_VERSION = "v1.0.0"

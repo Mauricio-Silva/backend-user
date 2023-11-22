@@ -10,23 +10,21 @@ from app.infra.gateway import EmailService
 from fastapi import Request
 
 
-def make_db_resend_email(request: Request) -> DbResendEmail:
+def make_db_resend_email() -> DbResendEmail:
     user_mongo_repository = UserMongoRepository()
     jwt_repository = JwtRepository(EXPIRE_RESET_PASSWORD_TIME)
     email_service = EmailService()
     return DbResendEmail(
-        request,
         user_mongo_repository,
         jwt_repository,
         email_service
     )
 
 
-def make_db_get_token(request: Request) -> DbGetToken:
+def make_db_get_token() -> DbGetToken:
     user_mongo_repository = UserMongoRepository()
     jwt_repository = JwtRepository()
     return DbGetToken(
-        request,
         user_mongo_repository,
         jwt_repository
     )

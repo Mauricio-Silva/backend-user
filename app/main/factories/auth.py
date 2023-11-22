@@ -10,15 +10,13 @@ from app.main.config import EXPIRE_RESET_PASSWORD_TIME, EXPIRE_CHECK_ACCOUNT_TIM
 from app.infra.mongo import UserMongoRepository, AccountMongoRepository
 from app.infra.auth import JwtRepository
 from app.infra.gateway import EmailService
-from fastapi import Request
 
 
-def make_db_auth_login(request: Request) -> AuthLogin:
+def make_db_auth_login() -> AuthLogin:
     user_mongo_repository = UserMongoRepository()
     jwt_repository = JwtRepository()
 
     return AuthLogin(
-        request,
         user_mongo_repository,
         jwt_repository,
         jwt_repository
@@ -37,12 +35,11 @@ def make_db_update_password() -> DbUpdatePassword:
     )
 
 
-def make_db_reset_password(request: Request) -> DbResetPassword:
+def make_db_reset_password() -> DbResetPassword:
     user_mongo_repository = UserMongoRepository()
     jwt_repository = JwtRepository(EXPIRE_RESET_PASSWORD_TIME)
     email_service = EmailService()
     return DbResetPassword(
-        request,
         user_mongo_repository,
         jwt_repository,
         email_service
@@ -58,11 +55,10 @@ def make_db_set_new_password() -> DbSetNewPassword:
     )
 
 
-def make_db_check_email(request: Request) -> DbCheckUserEmail:
+def make_db_check_email() -> DbCheckUserEmail:
     jwt_repository = JwtRepository(EXPIRE_CHECK_ACCOUNT_TIME)
     email_service = EmailService()
     return DbCheckUserEmail(
-        request,
         jwt_repository,
         email_service
     )

@@ -7,18 +7,16 @@ from app.data.protocols import (
 )
 from app.domain.models import LoginModelOut
 from app.main.exceptions import NotFound, Forbidden
-from fastapi import Request
+from app.main.config import CONTEXT_VAR
 
 
 class AuthLogin(UserLogin):
     def __init__(
         self,
-        request: Request,
         get_user_by_unique_repository: GetUserByUniqueRepository,
         check_user_password_repository: CheckUserPasswordRepository,
         encode_token_repository: EncodeTokenRepository
     ) -> None:
-        self.__request = request
         self.__get_user_by_unique_repository = get_user_by_unique_repository
         self.__check_user_password_repository = check_user_password_repository
         self.__encode_token_repository = encode_token_repository
@@ -37,7 +35,7 @@ class AuthLogin(UserLogin):
         if not valid_password:
             raise Forbidden("Invalid password")
 
-        encode_token_input = EncodeTokenInput(url=f"{self.__request.base_url}snapcut/api", uuid=str(user.uuid))
+        encode_token_input = EncodeTokenInput(url=CONTEXT_VAR.get(), uuid=str(user.uuid))
         access_token = self.__encode_token_repository.encode_token(encode_token_input)
 
         return LoginModelOut(uuid=user.uuid, username=user.username, access_token=access_token)

@@ -1,11 +1,12 @@
 from starlette.middleware.base import BaseHTTPMiddleware
 from app.schemas.common import CALL_NEXT_RESPONSE
-from app.models import TraceLog
+from app.main.config import CONTEXT_VAR, PREFIX
 from app.utils.logger import Logger
+from app.models import TraceLog
 from fastapi import Request
+from http import HTTPStatus
+from time import time
 import traceback
-import http
-import time
 
 
 class TraceControl(BaseHTTPMiddleware):
@@ -13,8 +14,11 @@ class TraceControl(BaseHTTPMiddleware):
         super().__init__(app)
 
     async def dispatch(self, request: Request, call_next: CALL_NEXT_RESPONSE):
+        if CONTEXT_VAR.get() is None:
+            CONTEXT_VAR.set(f"{request.base_url}{PREFIX.removeprefix('/')}")
+
         url = f"{request.url.path}?{request.query_params}" if request.query_params else request.url.path
-        start_time = time.time()
+        start_time = time()
 
         try:
             response = await call_next(request)
@@ -23,8 +27,8 @@ class TraceControl(BaseHTTPMiddleware):
             traceback.print_exc()
             raise exception
 
-        end_time = (time.time() - start_time) * 1000
-        status_phrase = http.HTTPStatus(response.status_code).phrase
+        end_time = (time() - start_time) * 1000
+        status_phrase = HTTPStatus(response.status_code).phrase
         process_time = "{0:.2f}".format(end_time)
 
         host = request.client.host or "0.0.0.0"

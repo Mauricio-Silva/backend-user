@@ -1,6 +1,6 @@
 from fastapi.routing import APIRouter
 from typing import Annotated
-from fastapi import Request, Body, Depends
+from fastapi import Body, Depends
 from app.main.factories import (
     make_db_auth_login,
     make_db_update_password,
@@ -33,11 +33,11 @@ router = APIRouter(prefix=f"{PREFIX}/auth", tags=['Auth'])
     response_description="Profile Logged",
     response_model=LoginOut
 )
-async def login(request: Request, data: Annotated[UserLogin, Body()]):
+async def login(data: Annotated[UserLogin, Body()]):
     if not data:
         raise RequiredRequestBody()
 
-    db_auth_login = make_db_auth_login(request)
+    db_auth_login = make_db_auth_login()
     user = await db_auth_login.login(data)
 
     return LoginOut(message="Login successfully", data=user)
@@ -75,14 +75,11 @@ async def update_password(
     response_model=MessageResponse,
     dependencies=[Depends(EmailApi())]
 )
-async def reset_password(
-    request: Request,
-    data: Annotated[PasswordReset, Body()]
-):
+async def reset_password(data: Annotated[PasswordReset, Body()]):
     if not data:
         raise RequiredRequestBody()
 
-    db_reset_password = make_db_reset_password(request)
+    db_reset_password = make_db_reset_password()
     await db_reset_password.reset_password(data)
 
     return MessageResponse(message="Email to reset password successfully sent")
