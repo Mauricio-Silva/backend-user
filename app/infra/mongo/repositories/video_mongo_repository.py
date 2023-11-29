@@ -1,4 +1,4 @@
-from .database import MongoConnection
+from app.infra.mongo.database import MongoConnection
 from app.data.protocols import (
     ListVideosRepository,
     AddVideoRepository,
@@ -9,7 +9,7 @@ from app.main.exceptions import (
     InternalError,
     NotFound
 )
-from .projections import (
+from app.infra.mongo.projections import (
     VIDEOS_PROJECTION,
     FRIENDS_PROJECTION
 )

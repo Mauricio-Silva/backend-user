@@ -1,0 +1,5 @@
+from .account_mongo_repository import AccountMongoRepository
+from .friend_mongo_repository import FriendMongoRepository
+from .photo_mongo_repository import PhotoMongoRepository
+from .user_mongo_repository import UserMongoRepository
+from .video_mongo_repository import VideoMongoRepository

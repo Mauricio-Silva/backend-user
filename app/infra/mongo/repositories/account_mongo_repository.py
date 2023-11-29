@@ -1,4 +1,5 @@
-from .database import MongoConnection
+from app.infra.mongo.projections import PASSWORD_PROJECTION, USER_MODEL_OUT_PROJECTION
+from app.infra.mongo.database import MongoConnection
 from app.data.protocols import (
     GetPasswordByUuidRepository,
     UpdatePasswordRepository,
@@ -6,7 +7,6 @@ from app.data.protocols import (
     SearchAccountsRepository,
     ValidateAccountRepository
 )
-from .projections import PASSWORD_PROJECTION, USER_MODEL_OUT_PROJECTION
 from app.main.exceptions import InternalError, NotFound
 from app.domain.models import UserModelOut
 from app.usecase import AccountSearch

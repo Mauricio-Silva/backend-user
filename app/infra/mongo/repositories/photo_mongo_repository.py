@@ -1,4 +1,5 @@
-from .database import MongoConnection
+from app.infra.mongo.projections import PHOTO_PROJECTION
+from app.infra.mongo.database import MongoConnection
 from app.data.protocols import ManagePhotoRepository
 from app.main.exceptions import (
     Conflict,
@@ -6,7 +7,6 @@ from app.main.exceptions import (
     NotFound
 )
 from app.schemas.photo import OperationType
-from .projections import PHOTO_PROJECTION
 from bson import ObjectId
 
 

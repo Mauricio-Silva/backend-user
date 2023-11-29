@@ -1,4 +1,4 @@
-from .database import MongoConnection
+from app.infra.mongo.database import MongoConnection
 from app.data.protocols import (
     ListUsersRepository,
     PersonalProfileRepository,
@@ -14,7 +14,7 @@ from app.data.protocols import (
 from app.models import CreateUserDocument, UpdateUserDocument
 from app.usecase import UserSearch, UserGetUnique
 from app.main.exceptions import NotFound, InternalError
-from .projections import (
+from app.infra.mongo.projections import (
     USER_MODEL_OUT_PROJECTION,
     PROFILE_MODEL_OUT_PROJECTION
 )

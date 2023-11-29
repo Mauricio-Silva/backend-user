@@ -9,7 +9,7 @@ from app.data.usecases.user import (
     DbEnableUser,
     DbDisableUser
 )
-from app.infra.mongo import UserMongoRepository
+from app.infra.mongo.repositories import UserMongoRepository
 from app.infra.auth import JwtRepository
 
 

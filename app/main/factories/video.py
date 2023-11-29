@@ -5,7 +5,7 @@ from app.data.usecases.video import (
     DbAddVideo,
     DbRemoveVideo,
 )
-from app.infra.mongo import VideoMongoRepository
+from app.infra.mongo.repositories import VideoMongoRepository
 
 
 def make_db_list_videos() -> DbListVideos:

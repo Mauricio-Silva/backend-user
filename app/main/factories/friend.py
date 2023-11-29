@@ -3,7 +3,7 @@ from app.data.usecases.friend import (
     DbAddFriend,
     DbRemoveFriend,
 )
-from app.infra.mongo import FriendMongoRepository
+from app.infra.mongo.repositories import FriendMongoRepository
 
 
 def make_db_list_friends() -> DbListFriends:

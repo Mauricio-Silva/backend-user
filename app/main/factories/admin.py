@@ -3,7 +3,7 @@ from app.data.usecases.admin import (
     DbGetToken,
     DbSearchAccounts
 )
-from app.infra.mongo import UserMongoRepository, AccountMongoRepository
+from app.infra.mongo.repositories import UserMongoRepository, AccountMongoRepository
 from app.main.config import EXPIRE_RESET_PASSWORD_TIME
 from app.infra.auth import JwtRepository
 from app.infra.gateway import EmailService

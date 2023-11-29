@@ -1,4 +1,5 @@
-from .database import MongoConnection
+from app.infra.mongo.projections import USER_MODEL_OUT_PROJECTION, FRIENDS_PROJECTION
+from app.infra.mongo.database import MongoConnection
 from app.data.protocols import (
     ListFriendsRepository,
     AddFriendRepository,
@@ -9,7 +10,6 @@ from app.main.exceptions import (
     InternalError,
     NotFound
 )
-from .projections import USER_MODEL_OUT_PROJECTION, FRIENDS_PROJECTION
 from app.domain.models import UserModelOut
 from bson import ObjectId
 

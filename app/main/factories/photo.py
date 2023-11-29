@@ -1,5 +1,5 @@
 from app.data.usecases.photo import DbManagePhoto
-from app.infra.mongo import PhotoMongoRepository
+from app.infra.mongo.repositories import PhotoMongoRepository
 
 
 def make_db_manage_photo() -> DbManagePhoto:
