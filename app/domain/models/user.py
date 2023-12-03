@@ -1,5 +1,6 @@
 from pydantic import BaseModel, ConfigDict, Field
 from app.schemas.common import OBJECT_UUID, DATETIME, LIST
+from .media import PhotoModelOut
 
 
 class UserModelOut(BaseModel):
@@ -7,7 +8,7 @@ class UserModelOut(BaseModel):
     name: str | None = None
     username: str | None
     email: str | None
-    photo: str | None = None
+    photo: PhotoModelOut | None = None
     phone: str | None = None
     bio: str | None
     create_at: DATETIME | None
@@ -27,7 +28,7 @@ class ProfileModelOut(BaseModel):
     name: str | None = None
     username: str | None
     email: str | None
-    photo: str | None = None
+    photo: PhotoModelOut | None = None
     phone: str | None = None
     bio: str | None
     videos: LIST = None
