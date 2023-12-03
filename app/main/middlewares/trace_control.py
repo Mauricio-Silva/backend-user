@@ -32,7 +32,7 @@ class TraceControl(BaseHTTPMiddleware):
         process_time = "{0:.2f}".format(end_time)
 
         host = request.client.host or "0.0.0.0"
-        port = request.client.port or 8000
+        port = request.client.port or 8001
         method = request.method
         status_code = response.status_code
 

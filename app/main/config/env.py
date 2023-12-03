@@ -12,7 +12,7 @@ PREFIX = "/backend-user/api"
 CONTEXT_VAR = ContextVar("url", default=None)
 
 APP_TITLE = "Backend-User"
-APP_PORT = int(getenv("APP_PORT", 8000))
+APP_PORT = int(getenv("APP_PORT", 8001))
 APP_VERSION = "v1.0.0"
 APP_SUMMARY = "A service to manage users' accounts experience"
 APP_DESCRIPTION = """
