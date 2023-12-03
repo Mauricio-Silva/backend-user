@@ -2,7 +2,7 @@
 
 # Match: no spaces; only letters and numbers; length of exactly 24 characters
 # Example: 507f1f77bcf86cd799439011
-PATH_UUID_REGEX = r"^[a-zA-Z0-9]{24}$"
+UUID_REGEX = r"^[a-zA-Z0-9]{24}$"
 
 # Match: no spaces; Username or Email
 # Example: Ana@TL_15 or ana@gmail.com

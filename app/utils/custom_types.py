@@ -1,7 +1,7 @@
 from typing import Annotated
 from pydantic import constr
 from .patterns import (
-    PATH_UUID_REGEX,
+    UUID_REGEX,
     QUERY_SEARCH_REGEX,
     NAME_REGEX,
     USERNAME_REGEX,
@@ -18,7 +18,7 @@ UUID_VALIDATOR = Annotated[str, constr(
     strict=True,
     min_length=24,
     max_length=24,
-    pattern=PATH_UUID_REGEX
+    pattern=UUID_REGEX
 )]
 
 SEARCH_VALIDATOR = Annotated[str, constr(

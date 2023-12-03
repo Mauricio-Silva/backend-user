@@ -48,7 +48,7 @@ class Lifespan:
     envs = ENVS
     mongo_uri = env.MONGODB_URI
     browser = env.BROWSER
-    SWAGGER = env.SWAGGER
+    swagger = env.SWAGGER
 
 
 class JWT:

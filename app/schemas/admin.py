@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from app.schemas.common import BaseResponse
 from app.domain.models import AccountOut, LoginModelOut
-from app.utils.custom_types import EMAIL_VALIDATOR, PASSWORD_VALIDATOR
+from app.utils.custom_types import EMAIL_VALIDATOR
 
 
 class EmailResend(BaseModel):
