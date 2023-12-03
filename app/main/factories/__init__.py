@@ -26,10 +26,7 @@ from .video import (
     make_db_list_videos,
     make_db_list_my_videos,
     make_db_list_friends_videos,
-    make_db_add_video,
-    make_db_remove_video
 )
-from .photo import make_db_manage_photo
 from .admin import (
     make_db_resend_email,
     make_db_get_token,

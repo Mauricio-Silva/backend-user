@@ -21,12 +21,9 @@ from .friend import (
 )
 from .video import (
     ListVideos,
-    AddVideo,
-    RemoveVideo,
     ListMyVideos,
     ListFriendsVideos
 )
-from .photo import ManagePhoto
 from .account import (
     UpdatePassword,
     ResetPassword,

@@ -7,8 +7,6 @@ FRIENDS_PROJECTION = {"friends": 1}
 
 VIDEOS_PROJECTION = {"_id": 0, "videos": 1}
 
-PHOTO_PROJECTION = {"_id": 0, "photo": 1}
-
 PASSWORD_PROJECTION = {"_id": 0, "password": 1}
 
 DISABLE_ACCOUNTS = {"is_enabled": 1, "create_at": 1}

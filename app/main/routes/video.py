@@ -1,22 +1,14 @@
 from fastapi.routing import APIRouter
 from typing import Annotated
-from fastapi import Depends, Body
+from fastapi import Depends
 from app.main.factories import (
     make_db_list_videos,
     make_db_list_my_videos,
-    make_db_list_friends_videos,
-    make_db_add_video,
-    make_db_remove_video,
+    make_db_list_friends_videos
 )
-from app.schemas.common import MessageResponse
-from app.schemas.video import VideosListOut, VideoInput
-from app.main.exceptions import (
-    RequiredRequestBody,
-    InvalidUuid
-)
+from app.schemas.video import VideosListOut
 from app.infra.auth import JwtBearer
 from app.main.config import PREFIX
-from bson import ObjectId
 
 
 router = APIRouter(prefix=f"{PREFIX}/video", tags=['Video'])
@@ -63,51 +55,3 @@ async def list_friends_videos(uuid: Annotated[str, Depends(JwtBearer())]):
     videos = await db_list_friends_videos.list_friends_videos(uuid)
 
     return VideosListOut(message="Friends videos found", data=videos)
-
-
-@router.patch(
-    "/add",
-    status_code=200,
-    summary="Add a Video",
-    response_description="Video Added",
-    response_model=MessageResponse
-)
-async def add_videos(
-    uuid: Annotated[str, Depends(JwtBearer())],
-    data: Annotated[VideoInput, Body()]
-):
-    if not data:
-        raise RequiredRequestBody()
-
-    if not ObjectId.is_valid(uuid):
-        raise InvalidUuid("user")
-
-    data.user_uuid = uuid
-    db_add_videos = make_db_add_video()
-    await db_add_videos.add_video(data)
-
-    return MessageResponse(message="Video added successfully")
-
-
-@router.patch(
-    "/remove",
-    status_code=200,
-    summary="Remove a Video",
-    response_description="Video Removed",
-    response_model=MessageResponse
-)
-async def remove_videos(
-    uuid: Annotated[str, Depends(JwtBearer())],
-    data: Annotated[VideoInput, Body()]
-):
-    if not data:
-        raise RequiredRequestBody()
-
-    if not ObjectId.is_valid(uuid):
-        raise InvalidUuid("user")
-
-    data.user_uuid = uuid
-    db_add_videos = make_db_remove_video()
-    await db_add_videos.remove_video(data)
-
-    return MessageResponse(message="Video removed successfully")

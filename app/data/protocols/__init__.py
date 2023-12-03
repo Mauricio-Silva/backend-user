@@ -24,12 +24,9 @@ from .friend import (
 )
 from .video import (
     ListVideosRepository,
-    AddVideoRepository,
-    RemoveVideoRepository,
     ListMyVideosRepository,
     ListFriendsVideosRepository
 )
-from .photo import ManagePhotoRepository
 from .account import (
     GetPasswordByUuidRepository,
     UpdatePasswordRepository,

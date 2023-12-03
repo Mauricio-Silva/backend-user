@@ -1,4 +1,3 @@
-from pydantic import BaseModel
 from abc import ABCMeta, abstractmethod
 from app.domain.models import VideoModelOut
 
@@ -8,28 +7,6 @@ class ListVideos(metaclass=ABCMeta):
 
     @abstractmethod
     async def list_all(self) -> Output:
-        pass
-
-
-class AddOrRemoveVideoInput(BaseModel):
-    user_uuid: str
-    video_url: str
-    video_uuid: str | None
-
-
-class AddVideo(metaclass=ABCMeta):
-    Input = AddOrRemoveVideoInput
-
-    @abstractmethod
-    async def add_video(self, data: Input) -> None:
-        pass
-
-
-class RemoveVideo(metaclass=ABCMeta):
-    Input = AddOrRemoveVideoInput
-
-    @abstractmethod
-    async def remove_video(self, data: Input) -> None:
         pass
 
 
