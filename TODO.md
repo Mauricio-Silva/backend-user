@@ -4,12 +4,14 @@ Social media for sharing videos
 
 ### Todo
 
+- [ ] implements pull/push in friends array  
 - [ ] implement other returns (exceptions/errors) in swagger  
 - [ ] implements OAuth2AuthorizationCodeBearer  
 - [ ] tests  
 
 ### Done
 
+- [ ] default array to []  
 - [ ] move database to infra mongo  
 - [ ] get url from trace control  
 - [ ] change db env to simple full url  
