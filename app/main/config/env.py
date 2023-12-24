@@ -12,14 +12,12 @@ PREFIX = "/backend-user/api"
 CONTEXT_VAR = ContextVar("url", default=None)
 
 APP_TITLE = "Backend-User"
-APP_PORT = int(getenv("APP_PORT", 8001))
 APP_VERSION = "v1.0.0"
 APP_SUMMARY = "A service to manage users' accounts experience"
 APP_DESCRIPTION = """
 <!-- cSpell:disable -->
 Instituto Federal de Educação, Ciência e Tecnologia de Mato Grosso do Sul - Três Lagoas <br/>
-Tecnologia em Análise e Desenvolvimento de Sistemas - TADS4 <br/>
-Eletiva: Rede Social
+Tecnologia em Análise e Desenvolvimento de Sistemas - TADS <br/>
 
 **SnapCut** - Social media for sharing videos
 """
@@ -35,10 +33,6 @@ COLLECTION = getenv("COLLECTION")
 
 EMAIL_SERVICE_BASE_URL = getenv("EMAIL_SERVICE_BASE_URL")
 EMAIL_SERVICE_ACCESS_TOKEN = getenv("EMAIL_SERVICE_ACCESS_TOKEN")
-
-BROWSER = getenv("BROWSER", "google-chrome")
-HOST = "0.0.0.0" if "--host" in sys.argv else "127.0.0.1"
-SWAGGER = f"http://{HOST}:{APP_PORT}/docs"
 
 SECRET_KEY = getenv("SECRET_KEY")
 ACCESS_KEY = getenv("ACCESS_KEY")

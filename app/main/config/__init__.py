@@ -7,8 +7,8 @@ from .env import (
     CONTEXT_VAR
 )
 from .config import (
-    Server,
-    Lifespan,
+    FASTAPI,
+    ENVS,
     JWT,
     Email
 )

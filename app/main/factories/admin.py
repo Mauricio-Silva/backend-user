@@ -7,7 +7,6 @@ from app.infra.mongo.repositories import UserMongoRepository, AccountMongoReposi
 from app.main.config import EXPIRE_RESET_PASSWORD_TIME
 from app.infra.auth import JwtRepository
 from app.infra.gateway import EmailService
-from fastapi import Request
 
 
 def make_db_resend_email() -> DbResendEmail:

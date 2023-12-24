@@ -31,8 +31,8 @@ class TraceControl(BaseHTTPMiddleware):
         status_phrase = HTTPStatus(response.status_code).phrase
         process_time = "{0:.2f}".format(end_time)
 
-        host = request.client.host or "0.0.0.0"
-        port = request.client.port or 8001
+        host = request.client.host
+        port = request.client.port
         method = request.method
         status_code = response.status_code
 
