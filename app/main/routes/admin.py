@@ -1,23 +1,22 @@
-from fastapi.routing import APIRouter
-from typing import Annotated
-from fastapi import Request, Body, Depends
-from app.main.factories import (
-    make_db_resend_email,
-    make_db_get_token,
-    make_db_search_accounts
-)
+from app.main.dependencies import AccessKey, EmailApi, RequestBody
 from app.schemas.common import MessageResponse, ACCOUNT_SEARCH
+from app.utils.serializations import exceptions_responses
+from app.main.exceptions import RequiredQueryParam
+from fastapi.routing import APIRouter
+from app.main.config import PREFIX
+from fastapi import Body, Depends
+from app.main.factories import (
+    make_db_search_accounts,
+    make_db_resend_email,
+    make_db_get_token
+)
 from app.schemas.admin import (
+    AccountLogin,
     AccountsOut,
     EmailResend,
-    AccountLogin,
     LoginOut
 )
-from app.main.exceptions import RequiredRequestBody, RequiredQueryParam
-from app.utils.serializations import exceptions_responses
-from app.infra.auth import AccessKey
-from app.infra.gateway import EmailApi
-from app.main.config import PREFIX
+from typing import Annotated
 
 
 router = APIRouter(prefix=f"{PREFIX}/admin", tags=['Admin'])
@@ -29,13 +28,14 @@ router = APIRouter(prefix=f"{PREFIX}/admin", tags=['Admin'])
     summary="Resend Email",
     response_description="Resending Email",
     response_model=MessageResponse,
-    dependencies=[Depends(AccessKey()), Depends(EmailApi())],
+    dependencies=[
+        Depends(AccessKey()),
+        Depends(RequestBody()),
+        Depends(EmailApi())
+    ],
     description=exceptions_responses(422, 404, 409, 500, 424),
 )
 async def resend_email(data: Annotated[EmailResend, Body()]):
-    if not data:
-        raise RequiredRequestBody()
-
     db_resend_email = make_db_resend_email()
     await db_resend_email.resend_email(data)
 
@@ -48,12 +48,9 @@ async def resend_email(data: Annotated[EmailResend, Body()]):
     summary="Get Login Token",
     response_description="Profile Logged",
     response_model=LoginOut,
-    dependencies=[Depends(AccessKey())]
+    dependencies=[Depends(AccessKey()), Depends(RequestBody())]
 )
 async def get_token(data: Annotated[AccountLogin, Body()]):
-    if not data:
-        raise RequiredRequestBody()
-
     db_get_token = make_db_get_token()
     user = await db_get_token.get_token(data)
 

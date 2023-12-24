@@ -1,26 +1,23 @@
+from app.main.dependencies import JwtBearer, EmailApi, RequestBody
+from app.schemas.common import MessageResponse
 from fastapi.routing import APIRouter
-from typing import Annotated
+from app.main.config import PREFIX
 from fastapi import Body, Depends
 from app.main.factories import (
-    make_db_auth_login,
+    make_db_set_new_password,
     make_db_update_password,
     make_db_reset_password,
-    make_db_set_new_password,
-    make_db_validate_email
+    make_db_validate_email,
+    make_db_auth_login
 )
-from app.schemas.common import MessageResponse
 from app.schemas.auth import (
-    UserLogin,
-    LoginOut,
     PasswordUpdate,
+    SetNewPassword,
     PasswordReset,
-    SetNewPassword
+    UserLogin,
+    LoginOut
 )
-from app.main.exceptions import RequiredRequestBody, InvalidUuid
-from app.infra.gateway import EmailApi
-from app.infra.auth import JwtBearer
-from app.main.config import PREFIX
-from bson import ObjectId
+from typing import Annotated
 
 
 router = APIRouter(prefix=f"{PREFIX}/auth", tags=['Auth'])
@@ -31,12 +28,10 @@ router = APIRouter(prefix=f"{PREFIX}/auth", tags=['Auth'])
     status_code=200,
     summary="Login a Profile",
     response_description="Profile Logged",
-    response_model=LoginOut
+    response_model=LoginOut,
+    dependencies=[Depends(RequestBody())]
 )
 async def login(data: Annotated[UserLogin, Body()]):
-    if not data:
-        raise RequiredRequestBody()
-
     db_auth_login = make_db_auth_login()
     user = await db_auth_login.login(data)
 
@@ -48,18 +43,13 @@ async def login(data: Annotated[UserLogin, Body()]):
     status_code=200,
     summary="Update User Password",
     response_description="User Password Updated",
-    response_model=MessageResponse
+    response_model=MessageResponse,
+    dependencies=[Depends(RequestBody())]
 )
 async def update_password(
     uuid: Annotated[str, Depends(JwtBearer())],
     data: Annotated[PasswordUpdate, Body()]
 ):
-    if not data:
-        raise RequiredRequestBody()
-
-    if not ObjectId.is_valid(uuid):
-        raise InvalidUuid("user")
-
     data.uuid = uuid
     db_update_password = make_db_update_password()
     await db_update_password.update_password(data)
@@ -73,12 +63,9 @@ async def update_password(
     summary="Reset User Password",
     response_description="Resetting Password",
     response_model=MessageResponse,
-    dependencies=[Depends(EmailApi())]
+    dependencies=[Depends(RequestBody()), Depends(EmailApi())]
 )
 async def reset_password(data: Annotated[PasswordReset, Body()]):
-    if not data:
-        raise RequiredRequestBody()
-
     db_reset_password = make_db_reset_password()
     await db_reset_password.reset_password(data)
 
@@ -90,18 +77,13 @@ async def reset_password(data: Annotated[PasswordReset, Body()]):
     status_code=200,
     summary="Set New Password",
     response_description="Setting New Password",
-    response_model=MessageResponse
+    response_model=MessageResponse,
+    dependencies=[Depends(RequestBody())]
 )
 async def set_new_password(
     uuid: Annotated[str, Depends(JwtBearer())],
     data: Annotated[SetNewPassword, Body()]
 ):
-    if not data:
-        raise RequiredRequestBody()
-
-    if not ObjectId.is_valid(uuid):
-        raise InvalidUuid("user")
-
     data.uuid = uuid
     db_set_new_password = make_db_set_new_password()
     await db_set_new_password.set_new_password(data)
@@ -118,9 +100,6 @@ async def set_new_password(
     dependencies=[Depends(EmailApi())]
 )
 async def validate_user_email(uuid: Annotated[str, Depends(JwtBearer())]):
-    if not ObjectId.is_valid(uuid):
-        raise InvalidUuid("user")
-
     db_validate_email = make_db_validate_email()
     await db_validate_email.validate_email(uuid)
 

@@ -1,35 +1,29 @@
+from app.schemas.common import PATH_UUID, QUERY_SEARCH, MessageResponse
+from app.main.dependencies import JwtBearer, EmailApi, RequestBody
+from app.main.exceptions import RequiredQueryParam
 from fastapi.routing import APIRouter
-from typing import Annotated
+from app.main.config import PREFIX
 from fastapi import Body, Depends
 from app.main.factories import (
-    make_db_list_users,
     make_db_personal_profile,
-    make_db_get_user,
+    make_db_disable_user,
     make_db_search_user,
     make_db_create_user,
     make_db_update_user,
     make_db_delete_user,
-    make_db_disable_user,
     make_db_enable_user,
-    make_db_check_email
+    make_db_check_email,
+    make_db_list_users,
+    make_db_get_user
 )
 from app.schemas.user import (
-    UserOut,
-    UsersOut,
-    ProfileOut,
     UserCreate,
-    UserUpdate
+    UserUpdate,
+    ProfileOut,
+    UsersOut,
+    UserOut
 )
-from app.schemas.common import PATH_UUID, QUERY_SEARCH, MessageResponse
-from app.main.exceptions import (
-    RequiredQueryParam,
-    InvalidUuid,
-    RequiredRequestBody
-)
-from app.infra.auth import JwtBearer
-from app.infra.gateway import EmailApi
-from app.main.config import PREFIX
-from bson import ObjectId
+from typing import Annotated
 
 
 router = APIRouter(prefix=f"{PREFIX}/user", tags=['Profile'])
@@ -57,9 +51,6 @@ async def list_all_profiles():
     response_model=ProfileOut
 )
 async def get_personal_profile(uuid: Annotated[str, Depends(JwtBearer())]):
-    if not ObjectId.is_valid(uuid):
-        raise InvalidUuid("user")
-
     db_personal_profile = make_db_personal_profile()
     profile = await db_personal_profile.get_personal_profile(uuid)
 
@@ -74,9 +65,6 @@ async def get_personal_profile(uuid: Annotated[str, Depends(JwtBearer())]):
     response_model=UserOut
 )
 async def get_profile_by_id(uuid: PATH_UUID):
-    if not ObjectId.is_valid(uuid):
-        raise InvalidUuid("user")
-
     db_get_user = make_db_get_user()
     user = await db_get_user.get_by_id(uuid)
 
@@ -106,12 +94,9 @@ async def search_profile(q: QUERY_SEARCH):
     summary="Create a new Profile",
     response_description="Profile Created",
     response_model=UserOut,
-    dependencies=[Depends(EmailApi())]
+    dependencies=[Depends(RequestBody()), Depends(EmailApi())]
 )
 async def create_profile(data: Annotated[UserCreate, Body()]):
-    if not data:
-        raise RequiredRequestBody()
-
     db_create_user = make_db_create_user()
     user = await db_create_user.create(data)
 
@@ -126,18 +111,13 @@ async def create_profile(data: Annotated[UserCreate, Body()]):
     status_code=200,
     summary="Update a Profile",
     response_description="Profile Updated",
-    response_model=UserOut
+    response_model=UserOut,
+    dependencies=[Depends(RequestBody())]
 )
 async def update_profile(
     uuid: Annotated[str, Depends(JwtBearer())],
     data: Annotated[UserUpdate, Body()]
 ):
-    if not data:
-        raise RequiredRequestBody()
-
-    if not ObjectId.is_valid(uuid):
-        raise InvalidUuid("user")
-
     data.uuid = uuid
     db_update_user = make_db_update_user()
     user = await db_update_user.update(data)
@@ -153,9 +133,6 @@ async def update_profile(
     response_model=MessageResponse
 )
 async def delete_profile(uuid: Annotated[str, Depends(JwtBearer())]):
-    if not ObjectId.is_valid(uuid):
-        raise InvalidUuid("user")
-
     db_delete_user = make_db_delete_user()
     await db_delete_user.delete(uuid)
 
@@ -170,9 +147,6 @@ async def delete_profile(uuid: Annotated[str, Depends(JwtBearer())]):
     response_model=UserOut
 )
 async def disable_profile(uuid: Annotated[str, Depends(JwtBearer())]):
-    if not ObjectId.is_valid(uuid):
-        raise InvalidUuid("user")
-
     db_disable_user = make_db_disable_user()
     user = await db_disable_user.disable(uuid)
 
@@ -187,9 +161,6 @@ async def disable_profile(uuid: Annotated[str, Depends(JwtBearer())]):
     response_model=UserOut
 )
 async def enable_profile(uuid: Annotated[str, Depends(JwtBearer())]):
-    if not ObjectId.is_valid(uuid):
-        raise InvalidUuid("user")
-
     db_enable_user = make_db_enable_user()
     user = await db_enable_user.enable(uuid)
 

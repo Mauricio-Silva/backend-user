@@ -1,16 +1,16 @@
+from app.main.exceptions import InternalError, Unauthorized
+from jose import jwt, JWTError, ExpiredSignatureError
+from app.domain.models import TokenModelOut
+from passlib.context import CryptContext
+from datetime import datetime, timedelta
+from app.models import JwtEncoder
 from app.data.protocols import (
-    HashUserPasswordRepository,
     CheckUserPasswordRepository,
+    HashUserPasswordRepository,
     EncodeTokenRepository,
     DecodeTokenRepository
 )
 from app.main.config import JWT
-from passlib.context import CryptContext
-from datetime import datetime, timedelta
-from jose import jwt, JWTError, ExpiredSignatureError
-from app.models import JwtEncoder
-from app.main.exceptions import InternalError, Unauthorized
-from app.domain.models import TokenModelOut
 
 
 class JwtRepository(
@@ -19,6 +19,9 @@ class JwtRepository(
     EncodeTokenRepository,
     DecodeTokenRepository
 ):
+    PREFIX = "uuid:"
+    ENCODING = "utf-8"
+
     def __init__(self, expire: int = None) -> None:
         self.__expire = JWT.expire if not expire else expire
         self.__crypt_context = CryptContext(schemes=[JWT.scheme], deprecated="auto")
@@ -30,10 +33,11 @@ class JwtRepository(
         return self.__crypt_context.verify(plain_password, hashed_password)
 
     def encode_token(self, data: EncodeTokenRepository.Input) -> str:
+        subject = self.PREFIX + data.uuid.encode(self.ENCODING).hex()
         expiration = datetime.utcnow() + timedelta(minutes=self.__expire)
         encoder = JwtEncoder(
             issuer=data.url,
-            subject=f"uuid:{data.uuid.encode('utf-8').hex()}",
+            subject=subject,
             expiration=expiration
         ).model_dump(by_alias=True)
         try:
@@ -45,8 +49,8 @@ class JwtRepository(
         try:
             decoder = jwt.decode(token, JWT.secret, algorithms=JWT.algorithm)
             model_out = TokenModelOut(**decoder)
-            hex_subject = model_out.subject.removeprefix("uuid:")
-            model_out.subject = bytes.fromhex(hex_subject).decode("utf-8")
+            hex_subject = model_out.subject.removeprefix(self.PREFIX)
+            model_out.subject = bytes.fromhex(hex_subject).decode(self.ENCODING)
             return model_out
         except ExpiredSignatureError:
             raise Unauthorized("Expired JWT token")

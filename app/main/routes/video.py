@@ -1,14 +1,14 @@
+from app.schemas.video import VideosListOut
+from app.main.dependencies import JwtBearer
 from fastapi.routing import APIRouter
+from app.main.config import PREFIX
+from app.main.factories import (
+    make_db_list_friends_videos,
+    make_db_list_my_videos,
+    make_db_list_videos
+)
 from typing import Annotated
 from fastapi import Depends
-from app.main.factories import (
-    make_db_list_videos,
-    make_db_list_my_videos,
-    make_db_list_friends_videos
-)
-from app.schemas.video import VideosListOut
-from app.infra.auth import JwtBearer
-from app.main.config import PREFIX
 
 
 router = APIRouter(prefix=f"{PREFIX}/video", tags=['Video'])

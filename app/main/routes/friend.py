@@ -1,17 +1,15 @@
-from fastapi.routing import APIRouter
-from typing import Annotated
-from fastapi import Depends, Path
-from app.main.factories import (
-    make_db_list_friends,
-    make_db_add_friend,
-    make_db_remove_friend
-)
-from app.schemas.common import MessageResponse, PATH_UUID
 from app.schemas.friend import FriendsListOut, FriendInput
-from app.main.exceptions import InvalidUuid
-from app.infra.auth import JwtBearer
+from app.schemas.common import MessageResponse, PATH_UUID
+from app.main.dependencies import JwtBearer
+from fastapi.routing import APIRouter
 from app.main.config import PREFIX
-from bson import ObjectId
+from app.main.factories import (
+    make_db_remove_friend,
+    make_db_list_friends,
+    make_db_add_friend
+)
+from typing import Annotated
+from fastapi import Depends
 
 
 router = APIRouter(prefix=f"{PREFIX}/friend", tags=['Friend'])
@@ -42,9 +40,6 @@ async def add_friend(
     uuid: Annotated[str, Depends(JwtBearer())],
     friend_uuid: PATH_UUID
 ):
-    if not ObjectId.is_valid(friend_uuid):
-        raise InvalidUuid("user")
-
     db_add_friend = make_db_add_friend()
     friend_input = FriendInput.make(uuid, friend_uuid)
     await db_add_friend.add_friend(friend_input)
@@ -63,9 +58,6 @@ async def remove_friend(
     uuid: Annotated[str, Depends(JwtBearer())],
     friend_uuid: PATH_UUID
 ):
-    if not ObjectId.is_valid(friend_uuid):
-        raise InvalidUuid("user")
-
     db_add_friend = make_db_remove_friend()
     friend_input = FriendInput.make(uuid, friend_uuid)
     await db_add_friend.remove_friend(friend_input)
