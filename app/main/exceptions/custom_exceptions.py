@@ -32,6 +32,11 @@ class Conflict(HttpException):
         super().__init__(409, message)
 
 
+class UnsupportedMediaType(HttpException):
+    def __init__(self, prefix: str) -> None:
+        super().__init__(415, f"Invalid {prefix} header")
+
+
 class InvalidUuid(HttpException):
     def __init__(self, prefix: str) -> None:
         super().__init__(422, f"Invalid {prefix} UUID")
