@@ -7,7 +7,7 @@ class VideosListReducer:
 
     @classmethod
     def __sorter(cls, data: VideoModelOut):
-        return data.create_at
+        return data.upload_at
 
     @classmethod
     def __list_all_reducer(cls, result: list, data: dict):

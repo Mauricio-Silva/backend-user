@@ -1,11 +1,12 @@
-from pydantic import BaseModel
 from app.schemas.common import DATETIME
+from pydantic import BaseModel
 
 
 class VideoModelOut(BaseModel):
+    uuid: str
     url: str
-    uuid: str | None
-    create_at: DATETIME | None
+    blob: str
+    upload_at: DATETIME
 
 
 class PhotoModelOut(BaseModel):
