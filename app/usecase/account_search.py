@@ -5,6 +5,8 @@ import re
 
 
 class AccountSearch:
+    KEY = "email"
+
     def __init__(self, collection: Collection, value: str, threshold: float) -> None:
         self.collection = collection
         self.value = value.lower().strip()
@@ -20,13 +22,13 @@ class AccountSearch:
             return True
 
     def filter(self, data: dict) -> bool:
-        if self.compare(data["email"]):
+        if self.compare(data[self.KEY]):
             return True
         else:
             return False
 
     def search(self) -> list[AccountOut]:
-        result = self.collection.find_one({"email": self.value}, ADMIN_PROJECTION)
+        result = self.collection.find_one({self.KEY: self.value}, ADMIN_PROJECTION)
 
         if result:
             return [AccountOut(**result)]

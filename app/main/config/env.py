@@ -2,7 +2,6 @@ from urllib.parse import quote_plus
 from contextvars import ContextVar
 from dotenv import load_dotenv
 from os import getenv
-import sys
 
 
 load_dotenv()

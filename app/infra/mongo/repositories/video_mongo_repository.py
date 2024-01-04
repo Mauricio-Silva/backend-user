@@ -32,7 +32,6 @@ class VideoMongoRepository(ListVideosRepository):
             result = collection.find_one({"_id": ObjectId(uuid)}, FRIENDS_PROJECTION)
             if not result or not result[self.FKEY]:
                 return None
-
             uuids_list = [ObjectId(uuid) for uuid in result[self.FKEY]]
             results = collection.find({"_id": {"$in": uuids_list}}, VIDEOS_PROJECTION)
             return VideosListReducer.list_friends_videos(results)
