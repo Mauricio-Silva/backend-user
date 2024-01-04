@@ -11,7 +11,7 @@ class VideosListReducer:
 
     @classmethod
     def __list_all_reducer(cls, result: list, data: dict):
-        if data is not None:
+        if len(data):
             result.append(VideoModelOut(**data))
         return result
 
@@ -26,7 +26,7 @@ class VideosListReducer:
 
     @classmethod
     def __list_friends_videos_reducer(cls, result: list, data: dict):
-        if data[cls.KEY] is not None:
+        if len(data[cls.KEY]):
             videos = map(cls.__mapper, data[cls.KEY])
             result.extend(videos)
         return result

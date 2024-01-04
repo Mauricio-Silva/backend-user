@@ -36,34 +36,36 @@ class FriendMongoRepository(
             if user is None:
                 return None
 
-            friends = [] if user[self.KEY] is None else list(user[self.KEY])
-            if data.friend_uuid in friends:
+            if data.friend_uuid in user[self.KEY]:
                 raise Conflict("Friend already exists")
 
-            friends.append(data.friend_uuid)
-            add_friend_update = {"$set": {self.KEY: friends}}
-
+            add_friend_update = {"$push": {self.KEY: data.friend_uuid}}
             result = collection.update_one({"_id": ObjectId(data.user_uuid)}, add_friend_update)
+
             if result.matched_count == 0:
                 raise NotFound("User")
             if result.matched_count == 1 and result.modified_count == 0:
                 raise InternalError("Error in adding friend")
 
     async def remove_friend(self, data: RemoveFriendRepository.Input) -> None:
-        with MongoConnection() as collection:
-            user = collection.find_one({"_id": ObjectId(data.user_uuid)}, FRIENDS_PROJECTION)
-            if user is None or not user[self.KEY]:
-                return None
+        friend_update = {"$pull": {self.KEY: data.friend_uuid}}
 
-            friends = list(user[self.KEY])
-            if data.friend_uuid not in friends:
+        with MongoConnection() as collection:
+            result = collection.find_one({
+                "_id": ObjectId(data.user_uuid),
+                self.KEY: data.friend_uuid
+            })
+
+            if not result:
                 raise NotFound("Friend")
 
-            friends.remove(data.friend_uuid)
-            remove_friend_update = {"$set": {self.KEY: friends}}
+            friend_uuid = result[self.KEY][0]
+            result = collection.update_one({"_id": ObjectId(data.user_uuid)}, friend_update)
 
-            result = collection.update_one({"_id": ObjectId(data.user_uuid)}, remove_friend_update)
             if result.matched_count == 0:
                 raise NotFound("User")
+
             if result.matched_count == 1 and result.modified_count == 0:
                 raise InternalError("Error in removing friend")
+
+            return friend_uuid
